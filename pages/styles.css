@@ -134,3 +134,38 @@ header{background:linear-gradient(180deg,#06172b,#041223);border-bottom:1px soli
 .community-row .action-label{padding-left:10px}
 .community-row .action-card>img,.community-row .social-icon{width:42px;height:42px;flex-basis:42px}
 }
+
+/* v6 — restrained luxury detailing. Existing v5 dimensions and content remain intact. */
+header{background:linear-gradient(180deg,rgba(9,26,44,.98),rgba(4,17,31,.97));border-bottom-color:#c6a66a50;box-shadow:0 5px 22px #0002}
+.topline{background:#020e1c;border-bottom-color:#c7a85a18}
+.top-inner{color:#aebed0}.status-dot{box-shadow:0 0 7px #edc95c77}
+.header nav a{position:relative;transition:color .18s ease;color:#d8e2ec}
+.header nav a:hover,.header nav a[aria-current="page"]{color:#f6d479}
+.header nav a[aria-current="page"]::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;border-radius:2px;background:linear-gradient(90deg,#b68b35,#f8dc90);box-shadow:0 1px 5px #edc95c33}
+.header-search{border-color:#7891ab36;background:linear-gradient(145deg,#041323,#0b2035);box-shadow:inset 0 1px 5px #0003}
+.btn.gold{background:linear-gradient(165deg,#fff0b9 0%,#f3d176 38%,#dfb34c 72%,#c99a38 100%);border-color:#ffe2a1;box-shadow:inset 0 1px 0 #fff5d099,0 3px 10px #d5a63a20;color:#101d2b}
+.btn.outline{border-color:#c5a466a0;background:#06182c45;color:#eef4fa}
+.hero-refined h1{letter-spacing:-1.35px;font-weight:750}
+.hero-refined h1 .accent{background-image:linear-gradient(180deg,#fff3c3 0%,#efd078 45%,#d2a443 95%)}
+.hero-kicker{color:#b8c8da}.hero-kicker i{background:linear-gradient(90deg,#caa45d,transparent)}
+.hero.hero-refined{border-bottom-color:#bfa06338}
+.community-row .action-card{background:radial-gradient(ellipse at 15% 0%,#1b3451 0%,#10243b 32%,#07182a 76%);border-color:#c7aa744c;box-shadow:inset 0 1px 0 #ffffff0d,0 7px 18px #0003;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.community-row .action-label{border-color:#d9c08a35}
+.community-row .action-card.dott-feature{border-color:#e3c278;background:radial-gradient(ellipse at 50% 125%,#8d632c 0%,#3f3225 25%,#111c2a 58%,#08182b 100%);box-shadow:0 4px 16px #e5ba5022,inset 0 1px 0 #fff5c855,inset 0 -2px 10px #d49d3133}
+.community-row .action-card .promo-sub{color:#f5d998}
+.community-row .arrow{border-color:#d6b466;color:#efd18d;background:#d6b4660b}
+.tools-row .tool-card{background:linear-gradient(115deg,#fdfdfb 0%,#f4f6f9 52%,#e3eaf4 100%);border-color:#e7edf4;box-shadow:inset 0 1px 0 #fff,0 5px 15px #0003;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.tools-row .tool-card img{filter:drop-shadow(0 3px 4px #07182d18)}
+.tools-row .tool-card h3{font-weight:700;color:#0d2037}.tool-label{color:#5f6c7c;font-weight:500}
+.tools-row .arrow{background:linear-gradient(155deg,#fff0bc,#e3b54e);color:#0b2036;box-shadow:inset 0 1px 0 #fff7}
+.home-content .newsbar{background:linear-gradient(112deg,#c39a4b 0%,#f5db8f 19%,#f0ce77 49%,#e8c271 76%,#bc9244 100%);border-color:#ead197;box-shadow:inset 0 1px 0 #fff5cc99,0 4px 14px #c8a35416;font-weight:750}
+.home-content .newsbar::before,.home-content .newsbar::after{opacity:.55}
+.home-content .panel{background:linear-gradient(155deg,#142a43,#0a1d32 80%);border-color:#a4b5c844;box-shadow:0 6px 18px #0003,inset 0 1px 0 #ffffff0a}
+.home-content .panelhead{border-bottom-color:#d4b47725}.home-content .panelhead a{color:#e9c878}
+.home-content .empty{border-color:#8295ad32;background:#07182b99;color:#bcc9d8}
+.home-content .category{border-color:#c8a66b45;background:linear-gradient(155deg,#132940,#081a2d);box-shadow:inset 0 1px 0 #ffffff08;transition:transform .2s ease,border-color .2s ease}
+.home-content .category svg{stroke:#e8c77c}
+.footer{background:linear-gradient(135deg,#0b1e34,#041324 80%);border-top-color:#c7a66850}
+.foot-grid h3{color:#e4c478}.foot-grid a{color:#d4dfea}.risk,.legal{border-color:#b8c7d51f}
+@media(hover:hover) and (pointer:fine){.community-row a.action-card:hover,.tools-row a.tool-card:hover,.home-content a.category:hover{transform:translateY(-2px);border-color:#e4c47d;box-shadow:0 8px 22px #0005}.home-content .newsbar:hover{filter:brightness(1.04)}.btn:hover{filter:brightness(1.05)}.foot-grid a:hover{color:#efcf86}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}

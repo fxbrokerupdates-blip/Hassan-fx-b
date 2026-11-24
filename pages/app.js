@@ -40,3 +40,16 @@ const todayEl=document.getElementById('today');if(todayEl)todayEl.textContent=ne
 document.getElementById('header-search')?.addEventListener('submit',e=>{e.preventDefault();const q=new FormData(e.currentTarget).get('q');location.hash='/news?'+new URLSearchParams({q:String(q||'')})});
 
 document.querySelector('.skip')?.addEventListener('click',e=>{e.preventDefault();main.focus();main.scrollIntoView()});window.addEventListener('hashchange',()=>{window.scrollTo(0,0);render()});init().catch(()=>{main.innerHTML=error()});
+
+/* Keep active navigation state accurate for static hash routes. */
+function markActiveNavigation(){
+ const route=(location.hash.slice(1)||'/').split('?')[0];
+ document.querySelectorAll('#nav a').forEach(el=>{
+  const target=(el.getAttribute('href')||'').replace(/^#/,'');
+  const active=target==='/'?route==='/':target.startsWith('/')&&(route===target||route.startsWith(target+'/'));
+  if(active)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');
+ });
+}
+window.addEventListener('hashchange',markActiveNavigation);
+const activeNav=document.getElementById('nav');if(activeNav)new MutationObserver(markActiveNavigation).observe(activeNav,{childList:true,subtree:true});
+markActiveNavigation();
