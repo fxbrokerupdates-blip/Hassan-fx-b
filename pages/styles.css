@@ -225,3 +225,48 @@ header{padding-bottom:0}.header{border-radius:0}
 @media(max-width:600px){header{backdrop-filter:none}.hero.hero-refined{margin:10px 16px 0;border-radius:14px}.hero-refined .hero-inner{padding-inline:17px}.hero-refined h1{letter-spacing:-.9px}.tools-row .tool-card h3{font-size:18px}}
 @media(hover:hover) and (pointer:fine){.community-row a.action-card:hover,.tools-row a.tool-card:hover,.home-content a.category:hover{border-color:#dcc18c;box-shadow:0 8px 20px #0005}.tools-row a.tool-card:hover{color:#fff}.btn.gold:hover{color:#14202d}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+
+/* v8 — compact editorial desktop canvas, native zoom, identical mobile layout. */
+@media(min-width:961px){
+.wrap{max-width:1360px;padding-inline:28px}
+.top-inner{min-height:25px;font-size:10px;letter-spacing:1px}
+.header{min-height:62px;gap:11px}
+.header .logo{width:175px;max-height:49px}
+.header nav{font-size:13px;gap:clamp(10px,1.2vw,17px)}
+.header .btn{font-size:12px;padding:8px 13px}
+.header-search{max-width:150px}.header-search input{width:110px;font-size:12px}
+.hero.hero-refined{max-width:1304px;width:calc(100% - 56px);margin:12px auto 0;border-radius:14px}
+.hero-refined .hero-inner{min-height:clamp(255px,18vw,285px);padding:23px 32px}
+.hero-refined h1{font-size:clamp(33px,2.55vw,43px);line-height:1.11;letter-spacing:-1.2px}
+.hero-kicker{font-size:9px;letter-spacing:1.7px;margin-bottom:12px}
+.hero-refined .actions{margin-top:18px;gap:10px}
+.hero-refined .actions .btn{min-height:36px;padding:8px 14px;font-size:12px}
+.hero-refined .hero-art{max-width:78%;height:100%;width:auto;object-fit:contain}
+.home-content{padding-top:3px;padding-bottom:24px}
+.home-content>.grid{gap:12px;margin-top:11px}
+.community-row .action-card{min-height:75px;padding:10px 15px;gap:12px;border-radius:10px}
+.community-row .action-card>img,.community-row .social-icon{width:42px;height:42px;flex-basis:42px;font-size:26px}
+.community-row .action-card h3{font-size:18px}
+.community-row .action-label{padding-left:10px}
+.community-row .action-card .promo-sub{font-size:11px;margin-top:2px}
+.community-row .arrow,.tools-row .arrow{width:28px;height:28px;flex-basis:28px;font-size:18px}
+.tools-row .tool-card{min-height:76px;padding:8px 15px;gap:15px;border-radius:10px}
+.tools-row .tool-card img{width:87px;max-height:58px}
+.tools-row .tool-card h3{font-size:18px}.tool-label{font-size:11px}
+.home-content .newsbar{min-height:46px;margin-top:11px;padding:8px 15px;font-size:19px}
+.newsbar .megaphone{width:21px;height:21px}
+.home-content .panel{padding:14px;border-radius:10px}
+.home-content .panelhead{padding-bottom:9px}
+.home-content .panelhead h2{font-size:20px}.home-content .panelhead a{font-size:12px}
+.home-content .category{min-height:77px;font-size:12px}
+.home-content .category svg{width:24px;height:24px}
+.foot-grid{padding-block:25px;gap:20px}
+}
+@media(min-width:961px) and (max-width:1120px){
+.wrap{padding-inline:22px}
+.hero.hero-refined{width:calc(100% - 44px)}
+.header .logo{width:155px}.header nav{font-size:12px;gap:9px}
+.hero-refined .hero-inner{padding-inline:24px}
+.community-row .action-card{padding:10px;gap:9px}
+.community-row .action-card h3{font-size:17px}
+}
