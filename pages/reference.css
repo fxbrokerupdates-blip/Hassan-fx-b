@@ -6,3 +6,26 @@
 @media(max-width:1250px){.ws{--side:200px}.ws-side>a{font-size:12px;gap:9px}.ws-admin-middle{grid-template-columns:1.6fr 1fr}.ws-admin-middle>.ws-panel:last-child{grid-column:1/-1}.ws-studio-icons{grid-template-columns:repeat(2,1fr)}.ws-tile h3{font-size:14px}.ws-tile i{font-size:26px}}
 @media(max-width:960px){.ws{--side:65px;--top:65px}.ws-brand{width:130px}.ws-brand img{width:125px}.ws-side>a{justify-content:center;padding:9px 0}.ws-side>a span,.ws-demo,.ws-admin-tag,.ws-person span{display:none}.ws-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.ws-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.ws-lower,.ws-admin-bottom{grid-template-columns:1fr}.ws-studio-icons{display:none}.ws-main{padding:10px}.reference-landing .hero-refined .hero-inner{padding-inline:20px}.reference-landing .hero-refined .hero-copy{max-width:73%}.reference-landing .tools-row .tool-card img{width:75px}}
 @media(max-width:600px){.reference-landing .hero-refined .hero-inner{padding:24px 16px;min-height:285px}.reference-landing .hero-refined .hero-copy{max-width:100%}.reference-landing .hero-refined .hero-art{max-width:100%;width:100%;opacity:.45;object-fit:cover}.reference-landing .community-row,.reference-landing .tools-row,.reference-landing .ref-category-grid{grid-template-columns:1fr!important}.reference-landing .community-row .dott-feature{grid-column:auto;grid-row:auto}.reference-landing .home-content .newsbar{font-size:16px}.reference-landing .hero-refined h1{font-size:30px}.ws{--side:45px;--top:57px}.ws-top{padding:8px;gap:7px}.ws-brand{width:100px}.ws-brand img{width:95px}.ws-search{padding:2px 6px}.ws-search input{font-size:10px}.ws-person i{width:29px;height:29px}.ws-side{padding:8px 3px}.ws-side>a i{font-size:19px}.ws-main{padding:8px}.ws-hero{padding:12px;min-height:115px}.ws-hero h1{font-size:22px}.ws-hero p{font-size:12px}.ws-free,.ws-studio img{display:none}.ws-tiles,.ws-kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.ws-tile{display:block;min-height:85px;padding:9px}.ws-tile h3{font-size:13px}.ws-tile p{font-size:10px}.ws-tile span{display:none}.ws-admin-middle{grid-template-columns:1fr}.ws-kpi{padding:8px;gap:5px}.ws-kpi i{font-size:22px}.ws-kpi span{font-size:11px}.ws-kpi strong{font-size:22px}.ws-panel{padding:10px}.ws-panel-head h2{font-size:16px}.ws-market{grid-template-columns:1fr}.ws-systems{grid-template-columns:1fr}.ws-main .admin-layout{grid-template-columns:1fr}}
+
+/* v13: consistent public theme and route isolation. */
+.reference-public{background:#f5f8fc;color:#0b2036;color-scheme:light}
+.reference-public>header,.reference-public>footer{background:#06182b;color:#f2f5fa}
+.reference-public>header .topline{display:none}
+.reference-public>header .header nav a{color:#edf4fc}
+.reference-public .page,.reference-public .article{color:#0b2036}
+.reference-public .page .card{background:#fff;border:1px solid #cbd9e9;color:#0b2036;box-shadow:0 3px 9px #153b6012}
+.reference-public .page .empty,.reference-public .article .empty{background:#edf3fa;color:#526780;border:1px solid #cbd9e9}
+.reference-public .page .muted,.reference-public .page .meta,.reference-public .article .meta{color:#526780}
+.reference-public .page .filters input,.reference-public .page .filters select{background:#fff;color:#10283e;border-color:#afc1d5}
+.reference-public .article .outline,.reference-public .page>.outline{color:#123d63;border-color:#bb974f}
+.reference-public .member-auth{color:#f0f4fa;color-scheme:dark}
+.reference-public .member-auth a{color:#e7c88e}
+.reference-public .member-auth .btn.gold{color:#081726}
+.route-boot>header,.route-boot>footer{visibility:hidden}
+.fx-route-loading{display:flex;align-items:center;justify-content:center;gap:12px;min-height:60vh;font-size:14px;color:#647c96}
+.reference-workspace .fx-route-loading{min-height:100vh;color:#b7c7dc}
+.fx-spinner{width:22px;height:22px;border:2px solid #b1bdcc55;border-top-color:#d7ad45;border-radius:50%;animation:fx-route-spin .7s linear infinite}
+@keyframes fx-route-spin{to{transform:rotate(360deg)}}
+.ws-article-image{max-height:340px;object-fit:contain;margin:16px 0;border-radius:8px}
+.ws-side a:focus-visible,.ws-top a:focus-visible{outline:2px solid #f1cf76;outline-offset:-2px}
+@media(prefers-reduced-motion:reduce){.fx-spinner{animation:none}}

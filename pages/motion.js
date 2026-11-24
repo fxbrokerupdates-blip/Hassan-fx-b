@@ -13,9 +13,9 @@
  const active=new Set();
  const targets='.hero-kicker,.hero-copy h1,.hero-copy .actions,.home-content .action-card,.home-content .tool-card,.home-content .newsbar,.home-content .panel:not(.motion-skeleton),.home-content .category,.page h1,.page .news-card,.article h1';
  function reveal(el){
-  if(seen.has(el))return;
+  if(seen.has(el)||!el.isConnected)return;
   seen.add(el);
-  if(reduce.matches||!el.animate)return;
+  if(reduce.matches||!el.animate||document.body.classList.contains('reference-workspace'))return;
   const delay=Number(el.dataset.fxDelay||0);
   const animation=el.animate([{opacity:.15,translate:'0 9px'},{opacity:1,translate:'0 0'}],{duration:420,delay,easing:'cubic-bezier(.2,.7,.3,1)',fill:'backwards'});
   active.add(animation);
