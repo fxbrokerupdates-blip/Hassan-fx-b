@@ -85,3 +85,52 @@ header{background:linear-gradient(180deg,#06172b,#041223);border-bottom:1px soli
 @media(max-width:1280px){.wrap{padding-inline:clamp(20px,3vw,38px)}.header nav{font-size:13px;gap:13px}.header .logo{width:175px}.header .btn{font-size:13px;padding:10px 14px}.header-search{display:none}.hero-refined h1{font-size:clamp(36px,4vw,51px)}.hero-refined .hero-inner{min-height:370px}.community-row .action-card{padding:15px;gap:12px;min-height:100px}.community-row .action-card h3{font-size:20px}.community-row .action-label{padding-left:12px}.community-row .action-card>img,.community-row .social-icon{width:52px;height:52px;flex-basis:52px}.tools-row .tool-card{min-height:106px}.tools-row .tool-card h3{font-size:22px}.tools-row .tool-card img{width:112px;max-height:80px}}
 @media(max-width:960px){.header-search{display:flex;max-width:150px}.header-search input{width:100px}.hero-refined .hero-inner{min-height:350px}.hero-refined .hero-copy{max-width:67%}.hero-refined .hero-art{object-position:63% center;opacity:.74}.hero-refined::after{background:linear-gradient(90deg,#031226a0,transparent 85%)}.community-row .action-card{padding:12px;gap:8px;min-height:88px}.community-row .action-label{border:0;padding-left:0}.community-row .action-card h3{font-size:17px}.community-row .action-card>img,.community-row .social-icon{width:40px;height:40px;flex-basis:40px;font-size:28px}.community-row .arrow{width:26px;height:26px;flex-basis:26px;font-size:17px}.community-row .action-card .promo-sub{font-size:10px}.tools-row .tool-card{padding:13px 16px;gap:14px}.tools-row .tool-card h3{font-size:19px}.tools-row .tool-card img{width:83px}.tools-row .arrow{width:31px;height:31px;flex-basis:31px;font-size:19px}}
 @media(max-width:600px){.wrap{padding-inline:16px}.top-inner{font-size:9px;letter-spacing:.6px;min-height:27px}.header{min-height:68px;gap:8px}.header .logo{width:148px}.header .btn{font-size:12px;padding:8px 11px}.header-search{display:none}.hero-refined .hero-inner{min-height:0;padding-top:210px;padding-bottom:26px;display:block}.hero-refined .hero-copy{max-width:none}.hero-refined .hero-art{inset:0 0 auto;transform:none;width:100%;height:235px;object-fit:cover;object-position:80% center;opacity:1;mask-image:linear-gradient(#000 64%,transparent);-webkit-mask-image:linear-gradient(#000 64%,transparent)}.hero-refined::after{background:none}.hero-refined h1{font-size:clamp(30px,8vw,40px);letter-spacing:-.8px}.hero-kicker{font-size:10px;letter-spacing:1.5px;margin-bottom:12px}.hero-refined .actions{margin-top:18px;gap:10px}.hero-refined .actions .btn{font-size:12px;min-height:40px;padding:9px 14px}.home-content>.grid{gap:11px;margin-top:12px}.community-row .action-card{min-height:76px;padding:12px;gap:9px}.community-row .action-card h3{font-size:16px}.community-row .action-card .promo-sub{font-size:11px}.tools-row .tool-card{min-height:89px;gap:17px}.tools-row .tool-card img{width:88px;max-height:70px}.tools-row .tool-card h3{font-size:19px}.tool-label{font-size:11px}.home-content .newsbar{font-size:18px;min-height:54px;margin-top:12px;gap:8px}.home-content .panel{padding:14px}.home-content .panelhead h2{font-size:19px}.home-content .panelhead a{font-size:12px}.home-content .category{min-height:87px;font-size:11px}.home-content .category svg{width:25px;height:25px}.foot-grid{gap:20px}.foot-grid a,.foot-grid p,.risk,.legal{font-size:13px}}
+
+/* v5 — balanced, compact desktop proportions at native browser zoom. */
+@media(min-width:961px){
+.wrap{max-width:1540px;padding-inline:40px}
+.top-inner{min-height:27px;font-size:10px}
+.header{min-height:72px;gap:14px}
+.header .logo{width:195px;max-height:60px}
+.header nav{font-size:14px;gap:clamp(12px,1.35vw,22px)}
+.header .btn{padding:9px 16px;font-size:13px}
+.header-search{max-width:172px}.header-search input{width:125px}
+.hero.hero-refined{background:#031226}
+.hero-refined .hero-inner{min-height:clamp(310px,22vw,360px);padding-block:28px}
+.hero-refined .hero-copy{max-width:54%}
+.hero-refined h1{font-size:clamp(38px,3.1vw,51px);line-height:1.10;letter-spacing:-1.3px}
+.hero-kicker{font-size:11px;letter-spacing:2px;margin-bottom:15px}
+.hero-refined .actions{margin-top:23px;gap:13px}
+.hero-refined .actions .btn{min-height:42px;padding:9px 18px;font-size:13px}
+/* Preserve complete 3:1 image; fade its left edge rather than crop the globe. */
+.hero-refined .hero-art{inset:0 max(0px,calc((100% - 1540px)/2)) 0 auto;transform:none;width:auto;max-width:76%;height:100%;object-fit:contain;object-position:right center;opacity:1;mask-image:linear-gradient(90deg,transparent 0%,#000 23%,#000 94%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 23%,#000 94%,transparent 100%)}
+.hero-refined::after{background:linear-gradient(90deg,#03122612 0%,transparent 45%),linear-gradient(0deg,#03102035,transparent 17%)}
+.home-content{padding-block:5px 26px}
+.home-content>.grid{gap:15px;margin-top:13px}
+.community-row .action-card{min-height:88px;padding:13px 19px;gap:15px;border-radius:12px}
+.community-row .action-card>img,.community-row .social-icon{width:49px;height:49px;flex-basis:49px;font-size:29px;border-radius:10px}
+.community-row .action-card h3{font-size:20px}
+.community-row .action-label{padding-left:13px}
+.community-row .action-card .promo-sub{font-size:12px;margin-top:3px}
+.community-row .arrow{width:31px;height:31px;flex-basis:31px;font-size:20px}
+.tools-row .tool-card{min-height:92px;gap:20px;padding:10px 19px;border-radius:12px}
+.tools-row .tool-card img{width:105px;max-height:70px}
+.tools-row .tool-card h3{font-size:21px}
+.tools-row .arrow{width:33px;height:33px;flex-basis:33px;font-size:20px}
+.home-content .newsbar{min-height:54px;margin-top:13px;padding:10px 18px;font-size:22px}
+.home-content .panel{padding:17px;border-radius:12px}
+.home-content .panelhead h2{font-size:23px}
+.home-content .category{min-height:90px;font-size:13px}
+.home-content .category svg{width:27px;height:27px}
+.foot-grid{padding-block:30px}
+}
+@media(min-width:961px) and (max-width:1280px){
+.wrap{padding-inline:28px}
+.header .logo{width:165px}.header nav{font-size:13px;gap:10px}
+.hero-refined .hero-art{max-width:72%;object-position:right center}
+.hero-refined .hero-inner{min-height:310px}
+.community-row .action-card{padding:12px 13px;gap:10px}
+.community-row .action-card h3{font-size:18px}
+.community-row .action-label{padding-left:10px}
+.community-row .action-card>img,.community-row .social-icon{width:42px;height:42px;flex-basis:42px}
+}
