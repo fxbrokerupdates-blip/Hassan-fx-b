@@ -1,0 +1,3 @@
+# Static public frontend migration (not a production release)
+
+This standalone, no-build frontend preserves the original brand, hero and content assets and reads published content through the public Supabase Data API. Uses hash navigation and explicit empty/error states. Login, signup, member and admin functionality, newsletter and contact submission remain disabled until secure migration and acceptance tests. The original Next.js application remains intact. Do not publish as the completed application. The JavaScript passed syntax checks; Chromium navigation was blocked by the execution environment, so browser and live API tests remain pending.
