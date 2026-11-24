@@ -29,3 +29,94 @@
 .ws-article-image{max-height:340px;object-fit:contain;margin:16px 0;border-radius:8px}
 .ws-side a:focus-visible,.ws-top a:focus-visible{outline:2px solid #f1cf76;outline-offset:-2px}
 @media(prefers-reduced-motion:reduce){.fx-spinner{animation:none}}
+
+/* Compact density pass — preserve layout, artwork, theme and all content. */
+.reference-public .page{padding-block:22px 28px}
+.reference-public .page h1{font-size:clamp(26px,2.6vw,34px);margin-bottom:12px;letter-spacing:-.65px}
+.reference-public .page h2{font-size:clamp(17px,1.6vw,21px)}
+.reference-public .page .grid{gap:10px;margin-top:10px;margin-bottom:12px}
+.reference-public .page .card{padding:12px}
+.reference-public .page .news-card h3{font-size:16px}
+.reference-public .page .news-card p{margin:5px 0;font-size:13px;line-height:1.45}
+.reference-public .page .btn.outline{background:#fff;color:#183450;border-color:#bacbdc}
+.reference-public .page .filters{gap:7px}
+.reference-landing .home-content>.grid{gap:10px;margin-top:9px}
+.reference-landing .community-row .action-card{min-height:84px;padding:9px 12px;gap:10px;align-items:center}
+.reference-landing .community-row .action-card h3{font-size:16px}
+.reference-landing .action-card p{font-size:12px;margin:3px 0 5px}
+.reference-landing .tools-row .tool-card{min-height:110px;padding:10px 12px;gap:10px}
+.reference-landing .tool-card h3{font-size:18px}
+.reference-landing .tool-card p{font-size:12px;margin:4px 0 6px}
+.reference-landing .tools-row .tool-card img{height:88px;width:88px;max-height:88px}
+.reference-landing .home-content .newsbar{min-height:44px;font-size:19px;padding:8px 12px;margin-top:10px}
+.reference-landing .ref-today{font-size:21px;margin-top:12px}
+.reference-landing .home-content .panelhead{padding:8px 10px}
+.reference-landing .home-content .panelhead h2{font-size:16px}
+.reference-landing .home-content .empty{margin:8px;padding:12px}
+.reference-landing .news-item{padding:7px 10px}
+.reference-landing .ref-category-grid .category{min-height:76px;padding:8px;gap:9px}
+.ref-category-grid .category img{width:60px;height:56px}
+.ref-category-grid h3{font-size:14px}
+.reference-landing .foot-grid{padding-block:20px}
+.ws-main{padding:11px 13px 20px}
+.ws-hero{min-height:118px;padding:16px 20px}
+.ws-hero h1{font-size:clamp(22px,2vw,28px)}
+.ws-hero p{font-size:13px;margin-top:5px}
+.ws-tiles,.ws-kpis,.ws-lower,.ws-admin-middle,.ws-admin-bottom{gap:9px;margin-top:9px}
+.ws-tile{min-height:82px;padding:10px;gap:9px}
+.ws-tile h3{font-size:14px}
+.ws-tile i{font-size:27px}
+.ws-kpi{min-height:76px;padding:10px;gap:8px}
+.ws-kpi strong{font-size:24px}
+.ws-kpi i{font-size:27px}
+.ws-studio{min-height:120px;margin-top:9px;padding:9px 13px}
+.ws-studio h2{font-size:22px}
+.ws-panel{padding:10px}
+.ws-panel-head{padding-bottom:7px;margin-bottom:8px}
+.ws-panel-head h2{font-size:16px}
+.ws-actions .ws-tile{min-height:66px}
+.ws-main .member-tile{padding:13px}
+.ws-main .member-sub{margin:7px 0 12px}
+.ws-main .admin-layout{gap:10px}
+.ws-main .admin-layout h2{font-size:18px;margin-bottom:9px}
+.ws-main .admin-table th,.ws-main .admin-table td{padding:8px 10px}
+.ws-main .admin-records{gap:6px;margin-top:10px}
+.ws-main .admin-records button{padding:8px}
+.ws-main .member-form{gap:10px}
+@media(min-width:961px){
+ .reference-landing>header .header,.reference-public>header .header{min-height:58px;gap:9px}
+ .reference-landing>header .header .logo,.reference-public>header .header .logo{width:150px;max-height:44px}
+ .reference-landing>header .header nav,.reference-public>header .header nav{font-size:12px;gap:10px;min-width:0;overflow-x:auto;justify-content:flex-start;scrollbar-width:thin;padding-block:6px}
+ .header nav a{white-space:nowrap;flex-shrink:0}
+ .reference-landing>header .header .btn,.reference-public>header .header .btn{padding:7px 10px;font-size:12px}
+ .reference-landing .hero-refined .hero-inner{min-height:244px;padding:19px 28px}
+ .reference-landing .hero-refined h1{font-size:clamp(30px,3vw,40px)}
+ .reference-landing .hero-refined p{margin:8px 0}
+ .reference-landing .hero-refined .actions,.reference-landing .hero-refined .chips{margin-top:10px}
+ .reference-landing .hero-refined .actions .btn{min-height:35px;padding:7px 13px}
+ .ws{--side:218px;--top:62px}
+ .ws-top{padding:8px 15px;gap:10px}
+ .ws-brand img{max-height:44px;width:176px}
+ .ws-side{padding:10px 8px;gap:2px}
+ .ws-side>a{min-height:35px;padding:7px 9px;font-size:12px;gap:9px}
+ .ws-side>a i{font-size:20px}
+}
+@media(max-width:600px){
+ .reference-public .page{padding-block:16px 22px}
+ .reference-landing .hero-refined .hero-inner{min-height:250px;padding:18px 16px}
+ .reference-landing .hero-refined h1{font-size:28px}
+ .reference-landing .community-row .action-card{min-height:76px}
+ .reference-landing .tools-row .tool-card{min-height:96px}
+ .reference-landing .tools-row .tool-card img{width:70px;height:70px}
+ .reference-landing .ref-category-grid .category{min-height:68px}
+ .ws-main{padding:8px}
+ .ws-hero{min-height:104px;padding:11px}
+ .ws-hero h1{font-size:21px}
+ .ws-hero p{font-size:12px}
+ .ws-tile{padding:8px;min-height:78px}
+ .ws-kpi{padding:7px;min-height:70px;gap:5px}
+ .ws-kpi strong{font-size:22px}
+ .ws-kpi i{font-size:21px}
+ .ws-side>a{min-height:44px}
+ .reference-public .page .btn{min-height:40px}
+}
