@@ -24,8 +24,7 @@ for item in select * from xmltable('/*[local-name()="rss"]/*[local-name()="chann
 end loop;
 if seen=0 then raise exception 'No RSS items recognized';end if;
 return jsonb_build_object('fetched',seen,'inserted',ins,'duplicates',dup);
-end;$function$
-
+end;$function$;
 CREATE OR REPLACE FUNCTION fx_news_private.refresh()
  RETURNS jsonb
  LANGUAGE plpgsql
@@ -60,7 +59,6 @@ for s in select * from public.news_sources where enabled and collection_permitte
 end loop;
 update public.scheduled_jobs set last_run_at=now(),last_status=case when failed>0 then 'failed' else 'success' end,last_error=case when failed>0 then 'See individual source run logs' else null end,next_run_at=now()+interval '5 minutes' where key='news_refresh';
 return jsonb_build_object('queued',queued,'finished',finished,'failed',failed,'inserted',inserted);
-end;$function$
-
+end;$function$;
 revoke all on function fx_news_private.ingest_rss(uuid,text) from public,anon,authenticated;
 revoke all on function fx_news_private.refresh() from public,anon,authenticated;
