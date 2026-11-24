@@ -21,3 +21,5 @@
 .fx-macro-controls input,.fx-macro-controls select{display:block;max-width:100%;min-height:36px;padding:7px 9px;border:1px solid #bacbdc;border-radius:7px;background:#fff;color:#132946}
 .fx-macro-chart{max-height:220px}
 @media(max-width:600px){.fx-market-widget{padding:8px}.fx-market-tabs .btn{min-height:40px}.fx-macro-controls input,.fx-macro-controls select{min-height:42px;width:100%}}
+
+.fx-intel-bars{display:grid;gap:10px;margin:16px 0 24px}.fx-intel-bars>div{display:grid;grid-template-columns:55px minmax(0,1fr) 90px;align-items:center;gap:12px;color:#132946}.fx-intel-bars strong{text-align:right;font-variant-numeric:tabular-nums}.fx-intel-track{display:block;height:12px;border-radius:999px;background:#edf1f6;overflow:hidden}.fx-intel-track i{display:block;height:100%;border-radius:999px}.fx-intel-track .pos{background:#16865d}.fx-intel-track .neg{background:#be3b4c}.fx-correlation td{text-align:center;font-variant-numeric:tabular-nums}.fx-market-widget select{padding:8px;border:1px solid #dbe3eb;border-radius:8px;background:white;color:#132946;max-width:100%}.fx-market-widget>label{display:block;margin-bottom:12px}
