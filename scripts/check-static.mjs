@@ -8,7 +8,7 @@ function run(read,exists,compile) {
   function check(ok,label){if(!ok)throw new Error(label);passed++;}
   const html=read('pages/index.html');
   const refs=[...html.matchAll(/(?:src|href)="([^"#?]+)(?:\?v=([^"]+))?"/g)].filter(m=>!m[1].startsWith('https:')&&/\.(css|js)$/.test(m[1]));
-  check(refs.length===10,'Expected 10 local JS/CSS assets');
+  check(refs.length===12,'Expected 12 local JS/CSS assets');
   for(const m of refs)check(exists('pages/'+m[1]),'Missing asset '+m[1]);
   check(new Set(refs.map(m=>m[2])).size===1&&refs.every(m=>m[2]),'Inconsistent cache versions');
   for(const m of refs.filter(m=>m[1].endsWith('.js'))){compile(read('pages/'+m[1]));passed++;}
@@ -34,7 +34,7 @@ function run(read,exists,compile) {
   for(const [slug,v] of [['ib-commission',{volume:1,rate:-1}],['cashback',{volume:1,rate:-1}],['break-even',{entry:1,side:1,lots:0,contract:1,fx:1,fees:0}]]){
     let rejected=false;try{api.calculate(slug,v)}catch{rejected=true;}check(rejected,'Invalid input accepted: '+slug);
   }
-  return passed;
+  const marketWin={};compile(read('pages/markets.js'),'window')(marketWin);const markets=marketWin.FXMarkets;check(markets.instruments.length===20,'Market instrument count');check(new Set(markets.instruments.map(i=>i[0])).size===20,'Duplicate instrument');check(markets.route('/invalid')===false,'Unknown market route');check(app.includes('FXMarkets?.route(path)'),'Market route missing');return passed;
 }
 
 const passed=run(p=>readFileSync(resolve(root,p),'utf8'),p=>existsSync(resolve(root,p)),(src,...args)=>new Function(...args,src));
