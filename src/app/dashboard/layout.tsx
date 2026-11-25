@@ -28,6 +28,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     f.video_scripts && !blocked.has("video_scripts") && { href: "/dashboard/scripts", label: "Daily Video Scripts", icon: "scripts" },
     f.ai_studio && !blocked.has("ai_studio") && { href: "/dashboard/studio", label: "AI Creator Studio", icon: "studio" },
     { href: "/dashboard/brokers", label: "Favourite Brokers", icon: "brokers" },
+    { href: "/dashboard/ib", label: "IB Center", icon: "brokers" },
     { href: "/dashboard/saved", label: "Saved Content", icon: "saved" },
     { href: "/dashboard/history", label: "My Content History", icon: "history" },
     { href: "/dashboard/notifications", label: "Notifications", icon: "bell", badge: unread ?? 0 },
