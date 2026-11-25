@@ -23,10 +23,11 @@ export function Header({ nav, logoUrl, siteName, premium = false }: { nav: NavIt
   const [searchOpen, setSearchOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const moreRef = useRef<HTMLDetailsElement>(null);
 
   const top = nav.filter((n) => !n.parent_id).sort((a, b) => a.sort_order - b.sort_order);
   const children = (id: string) => nav.filter((n) => n.parent_id === id).sort((a, b) => a.sort_order - b.sort_order);
-  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href.split("?")[0]));
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : (pathname===href.split("?")[0]||pathname.startsWith(href.split("?")[0]+"/")));
 
   // Viewer is loaded client-side so public pages stay cacheable.
   useEffect(() => {
@@ -43,10 +44,11 @@ export function Header({ nav, logoUrl, siteName, premium = false }: { nav: NavIt
       if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
         setMenu(null);
         setProfileOpen(false);
+        if(moreRef.current)moreRef.current.open=false;
       }
     };
     const esc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { setMenu(null); setProfileOpen(false); setSearchOpen(false); setOpen(false); }
+      if (e.key === "Escape") { setMenu(null); setProfileOpen(false); setSearchOpen(false); setOpen(false); if(moreRef.current)moreRef.current.open=false; }
     };
     document.addEventListener("mousedown", close);
     document.addEventListener("keydown", esc);
@@ -54,7 +56,7 @@ export function Header({ nav, logoUrl, siteName, premium = false }: { nav: NavIt
   }, []);
 
   // Close the drawer when navigating — handled in link onClick handlers below.
-  const navigate = () => { setOpen(false); setMenu(null); };
+  const navigate = () => { setOpen(false); setMenu(null); setProfileOpen(false); if(moreRef.current)moreRef.current.open=false; };
 
   function onSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -134,10 +136,10 @@ export function Header({ nav, logoUrl, siteName, premium = false }: { nav: NavIt
                 </button>
                 {profileOpen && (
                   <div className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-xl border border-gold-500/40 bg-navy-900 py-2 shadow-2xl">
-                    <Link href="/dashboard" className="flex items-center gap-2 px-4 py-2 hover:bg-white/5"><LayoutDashboard className="size-4" />Dashboard</Link>
-                    <Link href="/dashboard/profile" className="flex items-center gap-2 px-4 py-2 hover:bg-white/5"><User className="size-4" />My Profile</Link>
+                    <Link href="/dashboard" onClick={navigate} className="flex items-center gap-2 px-4 py-2 hover:bg-white/5"><LayoutDashboard className="size-4" />Dashboard</Link>
+                    <Link href="/dashboard/profile" onClick={navigate} className="flex items-center gap-2 px-4 py-2 hover:bg-white/5"><User className="size-4" />My Profile</Link>
                     {viewer.isStaff && (
-                      <Link href="/admin" className="flex items-center gap-2 px-4 py-2 hover:bg-white/5"><Shield className="size-4" />Admin Panel</Link>
+                      <Link href="/admin" onClick={navigate} className="flex items-center gap-2 px-4 py-2 hover:bg-white/5"><Shield className="size-4" />Admin Panel</Link>
                     )}
                     <form action="/auth/signout" method="post">
                       <button className="flex w-full items-center gap-2 px-4 py-2 text-left hover:bg-white/5"><LogOut className="size-4" />Logout</button>
@@ -169,7 +171,7 @@ export function Header({ nav, logoUrl, siteName, premium = false }: { nav: NavIt
  {label:"Tools",href:"/free-tools",links:[["All tools","/free-tools"],["Trading calculators","/trading-calculators"],["Banner prompts","/free-tools/banner-prompts"],["Video scripts","/free-tools/video-scripts"]]},
  {label:"IB Center",href:"/ib-programs",links:[["IB programs","/ib-programs"],["IB directory","/ib-directory"]]},
  {label:"Community",href:"/community",links:[]}
- ].map(n=>{const active=isActive(n.href)||n.links.some(([,href])=>isActive(href));return <div className="fx-pro-nav-group" key={n.href}><Link href={n.href} onClick={navigate} aria-current={pathname===n.href?"page":undefined} className={active?"fx-pro-nav-active":""}>{n.label}</Link>{n.links.length>0&&<><button type="button" className="fx-pro-nav-toggle" aria-label={n.label+" submenu"} aria-expanded={menu===n.href} onClick={()=>setMenu(menu===n.href?null:n.href)}><ChevronDown size={13}/></button>{menu===n.href&&<div className="fx-pro-dropdown">{n.links.map(([label,href])=><Link key={href} href={href} onClick={navigate}>{label}</Link>)}</div>}</>}</div>})}<Link className="fx-pro-nav-ai" href="/dashboard/studio">AI Studio</Link><details className="fx-pro-more"><summary>More</summary><div className="fx-pro-dropdown"><Link href="/legal" onClick={navigate}>Legal &amp; policies</Link>{top.map(n=><div key={n.id}><Link href={n.href} onClick={navigate}>{n.label}</Link>{children(n.id).map(k=><Link className="fx-pro-sub" key={k.id} href={k.href} onClick={navigate}>{k.label}</Link>)}</div>)}</div></details></nav>}
+ ].map(n=>{const active=isActive(n.href)||n.links.some(([,href])=>isActive(href));return <div className="fx-pro-nav-group" key={n.href}><Link href={n.href} onClick={navigate} aria-current={pathname===n.href?"page":undefined} className={active?"fx-pro-nav-active":""}>{n.label}</Link>{n.links.length>0&&<><button type="button" className="fx-pro-nav-toggle" aria-label={n.label+" submenu"} aria-expanded={menu===n.href} onClick={()=>setMenu(menu===n.href?null:n.href)}><ChevronDown size={13}/></button>{menu===n.href&&<div className="fx-pro-dropdown">{n.links.map(([label,href])=><Link key={href} href={href} onClick={navigate}>{label}</Link>)}</div>}</>}</div>})}<Link className="fx-pro-nav-ai" href="/dashboard/studio">AI Studio</Link><details ref={moreRef} className="fx-pro-more"><summary>More</summary><div className="fx-pro-dropdown"><Link href="/legal" onClick={navigate}>Legal &amp; policies</Link>{top.map(n=><div key={n.id}><Link href={n.href} onClick={navigate}>{n.label}</Link>{children(n.id).map(k=><Link className="fx-pro-sub" key={k.id} href={k.href} onClick={navigate}>{k.label}</Link>)}</div>)}</div></details></nav>}
       {searchOpen && (
         <div className="border-t border-white/10 bg-navy-900">
           <form onSubmit={onSearch} role="search" className="container-site flex gap-2 py-3">
