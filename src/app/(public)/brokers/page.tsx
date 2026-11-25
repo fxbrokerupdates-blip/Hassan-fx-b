@@ -16,6 +16,7 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function BrokersPage({ searchParams }: { searchParams: Promise<RawParams> }) {
+  const basePath="/brokers";
   const sp = await searchParams;
   const q = str(sp, "q", 60);
   const platform = str(sp, "platform", 60);
@@ -44,17 +45,18 @@ export default async function BrokersPage({ searchParams }: { searchParams: Prom
         </div>
         <ResearchStats items={[{label:"Broker profiles",value:all.filter(b=>!b.is_sample).length},{label:"Recorded license checks",value:all.filter(b=>!b.is_sample&&records(b.id).length>0).length},{label:"Matched profiles",value:brokers.length},{label:"Platforms listed",value:platforms.length}]}/>
         <form className="mb-6 grid gap-2 sm:grid-cols-[2fr_1fr_1fr_1fr_auto] fx-directory-filters" role="search">
+          {selected.map(slug=><input type="hidden" name="compare" value={slug} key={slug}/>)}
           <input name="q" defaultValue={q} placeholder="Search name or platform" className="input" aria-label="Search brokers" />
           <select name="platform" defaultValue={platform} className="input" aria-label="Platform"><option value="">All platforms</option>{platforms.map(p=><option key={p}>{p}</option>)}</select>
           <select name="jurisdiction" defaultValue={jurisdiction} className="input" aria-label="License jurisdiction"><option value="">All jurisdictions</option>{jurisdictions.map(j=><option key={j}>{j}</option>)}</select>
           <select name="sort" defaultValue={sort} className="input" aria-label="Sort"><option value="">Featured first</option><option value="az">Name A–Z</option><option value="za">Name Z–A</option></select>
           <button className="btn-gold px-5">Filter</button>
         </form>
-        <BrokerComparison compared={compared} licenses={licenses}/>
+        <BrokerComparison compared={compared} licenses={licenses} clearHref={basePath+"?"+new URLSearchParams(Object.entries({q,platform,jurisdiction,sort}).filter(([,v])=>v!==undefined) as [string,string][]).toString()}/>
         <form>
           <input type="hidden" name="jurisdiction" value={jurisdiction ?? ""}/><input type="hidden" name="q" value={q ?? ""}/><input type="hidden" name="platform" value={platform ?? ""}/><input type="hidden" name="sort" value={sort ?? ""}/>
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2"><p className="text-sm text-muted">{brokers.length} results · Select up to 3 for comparison</p><button className="btn-gold px-5">Compare selected</button></div>
-          {brokers.length === 0 ? <p className="rounded-xl border border-dashed border-white/15 p-12 text-center text-white/70">No matching brokers. <Link href="/brokers" className="text-gold-400">Reset filters</Link></p> :
+          {brokers.length === 0 ? <p className="rounded-xl border border-dashed border-white/15 p-12 text-center text-white/70">No matching brokers. <Link href={basePath} className="text-gold-400">Reset filters</Link></p> :
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 fx-directory-list">
           <div className="fx-directory-columns" aria-hidden="true"><span>Broker / recorded status</span><span>Trading platforms</span><span>Minimum deposit</span><span>Research actions</span></div>
           {brokers.map(b=><article key={b.id} className="card-plain p-4 fx-directory-row">
