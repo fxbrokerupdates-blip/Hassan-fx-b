@@ -23,7 +23,7 @@ export default async function FavouriteBrokers() {
     : { data: [] };
   const { data: suggestions } = await supabase.from("brokers").select("id,name,slug").eq("status", "active").order("is_featured", { ascending: false }).limit(12);
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 fx-member-followed">
       <h2 className="font-display text-2xl font-bold">Favourite <span className="gold-text">Brokers</span></h2>
       <Panel title="Brokers you" gold="follow">
         {rows.length === 0 ? <Empty>You’re not following any brokers yet.</Empty> : (
