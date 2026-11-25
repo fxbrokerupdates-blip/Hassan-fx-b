@@ -5,6 +5,7 @@ import { AdminHeader, Card, StatusBadge } from "@/components/admin/ui";
 import { RunJobButton } from "@/components/admin/run-buttons";
 import { JobControls } from "@/components/admin/job-row";
 import { formatDate, timeAgo } from "@/lib/utils";
+import { isServiceRoleConfigured, serverEnv } from "@/lib/server-env";
 
 export const metadata = { title: "Jobs & News Refresh" };
 export const dynamic = "force-dynamic";
@@ -17,10 +18,19 @@ export default async function JobsPage() {
     supabase.from("job_execution_logs").select("*").order("started_at", { ascending: false }).limit(40),
     supabase.from("news_sources").select("id,name,enabled,next_run_at,last_success_at,consecutive_failures,last_error,refresh_minutes").order("next_run_at").limit(50),
   ]);
+  const manualReady = isServiceRoleConfigured();
+  const schedulerReady = manualReady && serverEnv.cronSecret.length >= 16;
+  const enabled = (jobs ?? []).filter(j=>j.enabled);
+  const healthy = enabled.filter(j=>j.last_status==="success");
+  const awaiting = enabled.filter(j=>!j.last_run_at);
+  const failed = enabled.filter(j=>j.last_status==="failed");
   return (
     <div className="space-y-6">
-      <AdminHeader title="Background Jobs &" gold="News Refresh" description="Jobs run from a server-side scheduler calling /api/cron/run with the CRON_SECRET — never from a browser tab. Each job holds a database lock so runs never overlap."
-        actions={<RunJobButton jobKey="news_refresh" label="Refresh all due sources" />} />
+      <AdminHeader title="Background Jobs &" gold="News Refresh" description="Database-scheduled jobs and application workers use server-side locks. The status below reflects recorded executions, not simply an enabled toggle."
+        actions={manualReady ? <RunJobButton jobKey="news_refresh" label="Refresh all due sources" /> : undefined} />
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{[{label:"Enabled jobs",value:enabled.length},{label:"Last run successful",value:healthy.length},{label:"Never executed",value:awaiting.length},{label:"Failed last run",value:failed.length}].map(x=><div key={x.label} className="card-plain p-4"><p className="text-xs text-muted">{x.label}</p><strong className="mt-2 block text-2xl font-bold text-gold-400">{x.value}</strong></div>)}</div>
+      {!manualReady&&<div role="status" className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-4 text-sm text-amber-200">Manual application jobs are unavailable: server service credentials are not configured. Database cron jobs can still execute independently.</div>}
+      {!schedulerReady&&<p className="text-xs text-muted">Application scheduler endpoint is not configured. A job enabled in the table is not proof that a scheduler is connected.</p>}
       <Card title="Scheduled jobs">
         <div className="overflow-x-auto"><table className="table-clean"><thead><tr><th>Job</th><th>Schedule</th><th>Last run</th><th>Status</th><th>Next run</th><th>Lock</th><th /></tr></thead>
           <tbody>{(jobs ?? []).map((j) => (
@@ -31,7 +41,7 @@ export default async function JobsPage() {
               <td><StatusBadge value={j.last_status} />{j.last_error && <span className="block max-w-60 truncate text-xs text-red-300" title={j.last_error}>{j.last_error}</span>}</td>
               <td className="whitespace-nowrap text-muted">{formatDate(j.next_run_at, "UTC", true)}</td>
               <td className="text-xs">{j.locked_until && new Date(j.locked_until) > new Date() ? "running" : "—"}</td>
-              <td><RunJobButton jobKey={j.key} /></td>
+              <td>{manualReady?<RunJobButton jobKey={j.key}/>:<span className="text-xs text-muted">Server setup required</span>}</td>
             </tr>
           ))}</tbody></table></div>
       </Card>
