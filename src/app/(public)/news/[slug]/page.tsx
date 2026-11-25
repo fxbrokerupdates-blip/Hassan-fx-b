@@ -55,7 +55,7 @@ export default async function ArticlePage({ params }: Props) {
     { name: a.title.slice(0, 60), path: `/news/${a.slug}` },
   ];
   return (
-    <article className="container-site py-8">
+    <article className="container-site py-8 fx-article-page">
       <JsonLd data={newsArticleJsonLd(a, config.settings["site.general"].name)} />
       <JsonLd data={breadcrumbJsonLd(crumbs)} />
       <TrackOnMount event="article_open" content_type="article" content_id={a.id} metadata={{ news_type: a.news_type }} />
