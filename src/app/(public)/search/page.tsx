@@ -31,7 +31,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     ...(config.flags.video_scripts?[{href:"/free-tools/video-scripts",label:"Daily Video Scripts",keywords:"video reels youtube"}]:[]),
     ...(config.flags.ai_studio?[{href:"/dashboard/studio",label:"AI Creator Studio",keywords:"ai create article video content"}]:[]),
   ];
-  const terms=q.toLowerCase().split(/\s+/).filter(Boolean);
+  const terms=(q??"").toLowerCase().split(/\s+/).filter(Boolean);
   const matchingTools=q?destinations.filter(item=>terms.every(term=>(item.label+" "+item.keywords).toLowerCase().includes(term))):[];
   return (
     <>
