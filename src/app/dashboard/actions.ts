@@ -191,12 +191,15 @@ export async function toggleBrokerNotifyAction(brokerId: string, notify: boolean
   revalidatePath("/dashboard/brokers");
 }
 
-export async function deleteGenerationAction(id: string) {
+export async function deleteGenerationAction(id: string): Promise<ActionState> {
   const viewer = await requireUser();
   const supabase = await createSupabaseServer();
-  await supabase.from("saved_content").delete().eq("user_id", viewer.id).eq("content_type", "ai_generation").eq("content_id", id);
-  await supabase.from("ai_generations").delete().eq("id", id).eq("user_id", viewer.id);
+  const {error: savedError} = await supabase.from("saved_content").delete().eq("user_id", viewer.id).eq("content_type", "ai_generation").eq("content_id", id);
+  if (savedError) return {error:"Could not remove saved content."};
+  const {data,error} = await supabase.from("ai_generations").delete().eq("id", id).eq("user_id", viewer.id).select("id").maybeSingle();
+  if (error || !data) return {error:"Could not delete generation."};
   revalidatePath("/dashboard/history");
+  return {ok:true,message:"Deleted."};
 }
 
 export async function updateGenerationAction(id: string, output: string): Promise<ActionState> {
