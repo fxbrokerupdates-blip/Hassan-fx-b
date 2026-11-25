@@ -1,3 +1,4 @@
+import { SupportNav } from "@/components/layout/research-widgets";
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/news/page-header";
 import { ContactForm } from "@/components/forms/contact-form";
@@ -12,7 +13,7 @@ export default async function AdvertisePage() {
   return (
     <>
       <PageHeader title="Advertise" gold="With Us" crumbs={[{ name: "Home", path: "/" }, { name: "Advertise", path: "/advertise" }]} />
-      <div className="container-site grid gap-8 py-10 lg:grid-cols-[320px_1fr]">
+      <div className="container-site py-10 fx-support-layout"><SupportNav active="/advertise"/><div className="fx-contact-grid grid gap-8 lg:grid-cols-[320px_1fr]">
         <div className="card-navy h-fit p-6">
           <RichText text={settings["site.legal"].advertise} className="prose-fx text-base" />
           <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-white/80">
@@ -21,7 +22,7 @@ export default async function AdvertisePage() {
           </ul>
         </div>
         <ContactForm kind="advertise" />
-      </div>
+      </div></div>
     </>
   );
 }
