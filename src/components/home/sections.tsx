@@ -98,6 +98,20 @@ export function SocialCards({ data }: { data: HomepageContent["social_cards"] })
   );
 }
 
+/** Desktop-only partner strip, using the existing admin-managed homepage cards. */
+export function DesktopPartnerCards({data}:{data:HomepageContent["social_cards"]}){
+ const order=["facebook","dott_plus","linkedin"];
+ const cards=data.cards.filter(c=>c.visible!==false&&order.includes(c.key)).sort((a,b)=>order.indexOf(a.key)-order.indexOf(b.key));
+ if(!cards.length)return null;
+ function valid(href:string){try{const u=new URL(href);return u.protocol==="https:"&&u.hostname!=="example.com"&&u.hostname!=="www.example.com"&&!((u.hostname==="www.facebook.com"||u.hostname==="facebook.com"||u.hostname==="www.linkedin.com"||u.hostname==="linkedin.com")&&u.pathname==="/");}catch{return false;}}
+ return <section aria-label="Community and partner links" className="fx-partner-strip" style={{gridTemplateColumns:cards.length===3?"1fr 1.15fr 1fr":`repeat(${cards.length},minmax(0,1fr))`}}>{cards.map(c=>{
+ const enabled=valid(c.href);const center=c.key==="dott_plus";
+ const body=<><SocialIcon k={c.key} image={"image_url" in c?String(c.image_url):undefined}/><span className="fx-partner-copy"><strong>{c.title}</strong><small>{c.description}</small>{!enabled&&<small className="fx-partner-pending">Link coming soon</small>}</span><span className="fx-partner-action" aria-hidden="true">{center?<Download size={18}/>:<ArrowRight size={17}/>}</span></>;
+ const cls="fx-partner-card"+(center?" fx-partner-feature":"")+(!enabled?" fx-partner-unavailable":"");
+ return enabled?<TrackedLink key={c.key} href={c.href} external={c.external} event={center?"dott_plus_click":c.key==="facebook"?"facebook_click":"linkedin_click"} meta={{placement:"home_partner_strip"}} className={cls}>{body}</TrackedLink>:<div key={c.key} className={cls}>{body}</div>;
+ })}</section>;
+}
+
 /* ---------------- Daily free tools ---------------- */
 export function DailyTools({ data }: { data: HomepageContent["daily_tools"] }) {
   return (
