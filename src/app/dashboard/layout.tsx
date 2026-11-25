@@ -45,8 +45,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
     { href: "/dashboard/studio", label: "AI Studio", icon: "studio" },
     { href: "/dashboard/profile", label: "Profile", icon: "user" },
   ];
+  const desktop: (ShellItem|false)[] = [
+    {href:"/dashboard",label:"Dashboard",icon:"dashboard"}, {href:"/dashboard/market-watch",label:"Market Watch",icon:"market"}, {href:"/dashboard/broker-directory",label:"Brokers",icon:"broker"}, {href:"/dashboard/brokers",label:"Favourite Brokers",icon:"brokers"}, {href:"/dashboard/trader",label:"Trading Workspace",icon:"trading"}, {href:"/dashboard/calendar",label:"Economic Calendar",icon:"calendar"}, {href:"/dashboard/news?type=all",label:"News & Analysis",icon:"news"}, {href:"/dashboard/tools",label:"Trading Tools",icon:"tools"}, f.banner_prompts&&!blocked.has("banner_prompts")&&{href:"/dashboard/prompts",label:"Daily Banner Prompts",icon:"prompts"}, f.video_scripts&&!blocked.has("video_scripts")&&{href:"/dashboard/scripts",label:"Daily Video Scripts",icon:"scripts"}, f.ai_studio&&!blocked.has("ai_studio")&&{href:"/dashboard/studio",label:"AI Creator Studio",icon:"studio"}, {href:"/dashboard/ib",label:"IB Center",icon:"broker"}, {href:"/dashboard/community",label:"Community",icon:"community"}, {href:"/dashboard/saved",label:"Saved Content",icon:"saved"}, {href:"/dashboard/history",label:"Content History",icon:"history"}, {href:"/dashboard/notifications",label:"Notifications",icon:"bell",badge:unread??0}, {href:"/dashboard/profile",label:"My Profile",icon:"user"}, {href:"/dashboard/settings",label:"Settings",icon:"settings"}, {href:"/dashboard/support",label:"Help & Support",icon:"help"}
+  ];
   return (
-    <Shell items={items.filter(Boolean) as ShellItem[]} bottom={bottom} title="Member Dashboard"
+    <Shell desktopItems={desktop.filter(Boolean) as ShellItem[]} unread={unread??0} items={items.filter(Boolean) as ShellItem[]} bottom={bottom} title="Member Dashboard"
       user={{ name: viewer.profile?.full_name || "Member", email: viewer.email, isStaff: viewer.isStaff }}>
       {children}
     </Shell>
