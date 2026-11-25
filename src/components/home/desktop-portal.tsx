@@ -17,7 +17,7 @@ function PanelTitle({title,href,Icon}:{title:string;href:string;Icon:typeof News
 export async function DesktopPortal({hero,articles,showHero,showNews,partners,daily,flags={}}:{hero:HomepageContent["hero"];articles:Article[];showHero:boolean;showNews:boolean;partners?:HomepageContent["social_cards"];daily?:HomepageContent["daily_tools"];flags?:Record<string,boolean>}){
 const db=createSupabasePublic();
 const [rateResult,cotResult,allBrokers,licenses]=await Promise.all([
-db?db.from("fx_reference_rates").select("currency,period,units_per_eur").order("period",{ascending:false}).limit(350):Promise.resolve({data:[]}),
+db?db.from("fx_reference_rates").select("currency,period,units_per_eur").in("currency",["AUD","CAD","CHF","GBP","JPY","NZD","USD"]).order("period",{ascending:false}).limit(350):Promise.resolve({data:[]}),
 db?db.from("cot_currency_positions").select("currency,period,open_interest,asset_long,asset_short,leveraged_long,leveraged_short").order("period",{ascending:false}).limit(100):Promise.resolve({data:[]}),
 listBrokers(),listVerifiedLicenseRecords()]);
 const snapshots=rateSnapshots((rateResult.data??[]) as Rate[]);const [current,previous]=snapshots;
