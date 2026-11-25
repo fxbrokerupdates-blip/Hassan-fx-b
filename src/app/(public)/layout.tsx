@@ -1,3 +1,4 @@
+import { MobileNav } from "@/components/layout/mobile-nav";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { getSiteConfig } from "@/lib/data/site";
@@ -15,9 +16,10 @@ export default async function PublicLayout({ children }: { children: React.React
           Development mode — Supabase is not configured. Items marked SAMPLE are placeholders, not real news.
         </div>
       )}
-      <Header nav={config.nav} logoUrl={g.logo_url} siteName={g.name} />
+      <div className="fx-public-shell"><Header nav={config.nav} logoUrl={g.logo_url} siteName={g.name} />
       <main id="main">{maintenance.enabled ? <MaintenanceNotice message={maintenance.message} /> : children}</main>
       <Footer config={config} />
+      {!maintenance.enabled && <MobileNav/>}</div>
     </>
   );
 }
