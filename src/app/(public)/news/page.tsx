@@ -7,6 +7,7 @@ import { pageMetadata } from "@/lib/seo";
 import { oneOf, str, type RawParams } from "@/lib/params";
 import type { NewsQuery } from "@/lib/data/news";
 import { cn } from "@/lib/utils";
+import { MARKETS } from "@/lib/defaults";
 
 export const metadata: Metadata = pageMetadata({
   title: "All News — Broker & Trading Updates",
@@ -63,7 +64,7 @@ export default async function AllNewsPage({ searchParams }: { searchParams: Prom
         </details>
       </div>
       <NewsCenter basePath="/news" sp={sp} base={base} showFeatured={tab === "all"}
-        filters={{ showType: tab === "all", categories: config.categories.map((c) => ({ value: c.slug, label: c.name })) }} />
+        filters={{ showType: tab === "all", categories: config.categories.map((c) => ({ value: c.slug, label: c.name })), markets: tab==="broker"?undefined:MARKETS.map(m=>({value:m.value,label:m.label})),showImpact:tab!=="broker" }} />
     </>
   );
 }
