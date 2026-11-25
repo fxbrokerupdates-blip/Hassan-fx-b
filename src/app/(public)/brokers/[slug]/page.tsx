@@ -52,7 +52,7 @@ export default async function BrokerProfilePage({ params }: Props) {
     <>
       <PageHeader title={b.name} crumbs={[{ name: "Home", path: "/" }, { name: "Broker Reviews", path: "/brokers" }, { name: b.name, path: `/brokers/${slug}` }]} />
       <TrackOnMount event="broker_view" content_type="broker" content_id={b.id} />
-      <div className="container-site grid gap-8 py-8 lg:grid-cols-[1fr_340px]">
+      <div className="container-site grid gap-8 py-8 lg:grid-cols-[1fr_340px] fx-broker-profile">
         <div className="min-w-0 space-y-8">
           <section className="card-plain flex flex-wrap items-center gap-5 p-6">
             <span className="grid size-20 place-items-center overflow-hidden rounded-xl bg-white">
