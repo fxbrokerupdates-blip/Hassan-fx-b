@@ -16,6 +16,7 @@ export const listBrokers = cache(async (q?: string): Promise<Broker[]> => {
 
 export interface BrokerDetail {
   broker: Broker;
+  sources: { label: string; url: string; source_kind: string; checked_at: string }[];
   regulations: { id: string; regulator: string; license_number: string | null; jurisdiction: string | null; status: string; verification_url: string; verified_at: string | null }[];
   promotions: { id: string; title: string; description: string | null; terms_url: string | null; source_url: string | null; starts_at: string | null; ends_at: string | null; is_verified: boolean }[];
   reviews: { id: string; review_type: "editorial" | "user" | "sponsored"; rating: number | null; title: string; body: string; created_at: string }[];
@@ -25,17 +26,19 @@ export const getBroker = cache(async (slug: string): Promise<BrokerDetail | null
   const db = createSupabasePublic();
   if (!db) {
     const b = isDevelopmentMode ? SAMPLE_BROKERS.find((x) => x.slug === slug) : undefined;
-    return b ? { broker: b, regulations: [], promotions: [], reviews: [] } : null;
+    return b ? { broker: b, regulations: [], promotions: [], reviews: [], sources: [] } : null;
   }
   const { data: broker } = await db.from("brokers").select("*").eq("slug", slug).eq("status", "active").maybeSingle();
   if (!broker) return null;
-  const [regs, promos, reviews] = await Promise.all([
+  const [regs, promos, reviews, sources] = await Promise.all([
     db.from("broker_regulations").select("*").eq("broker_id", broker.id).order("regulator"),
     db.from("broker_promotions").select("*").eq("broker_id", broker.id).eq("status", "active").order("starts_at", { ascending: false }),
     db.from("broker_reviews").select("id,review_type,rating,title,body,created_at").eq("broker_id", broker.id).eq("status", "approved").order("created_at", { ascending: false }).limit(20),
+    db.from("broker_profile_sources").select("label,url,source_kind,checked_at").eq("broker_id", broker.id).order("checked_at", { ascending: false }),
   ]);
   return {
     broker: broker as Broker,
+    sources: (sources.data ?? []) as BrokerDetail["sources"],
     regulations: (regs.data ?? []) as BrokerDetail["regulations"],
     promotions: (promos.data ?? []) as BrokerDetail["promotions"],
     reviews: (reviews.data ?? []) as BrokerDetail["reviews"],
