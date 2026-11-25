@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "FX Broker Updates",
     short_name: "FX Updates",
     description: "Global broker news, trading updates and free daily content tools.",
-    start_url: "/dashboard",
+    start_url: "/",
     scope: "/",
     display: "standalone",
     background_color: "#031222",
