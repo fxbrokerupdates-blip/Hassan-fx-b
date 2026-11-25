@@ -44,3 +44,10 @@ export const getBroker = cache(async (slug: string): Promise<BrokerDetail | null
     reviews: (reviews.data ?? []) as BrokerDetail["reviews"],
   };
 });
+
+export const listVerifiedLicenseRecords = cache(async (): Promise<{broker_id:string;regulator:string;jurisdiction:string|null;license_number:string|null;verified_at:string|null}[]> => {
+  const db = createSupabasePublic();
+  if (!db) return [];
+  const { data } = await db.from("broker_regulations").select("broker_id,regulator,jurisdiction,license_number,verified_at").eq("status","verified").not("verified_at","is",null).limit(1000);
+  return data ?? [];
+});
