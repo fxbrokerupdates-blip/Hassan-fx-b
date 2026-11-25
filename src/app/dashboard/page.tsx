@@ -89,7 +89,7 @@ export default async function DashboardHome() {
         {(trading.data ?? []).length ? <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{(trading.data as unknown as Article[]).map((a) => <NewsCard key={a.id} a={a} />)}</div> : <Empty>No trading news yet.</Empty>}
       </Panel>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+    </div><div className="grid gap-6 lg:grid-cols-2 fx-member-personal-panels">
         <Panel title="Followed" gold="Broker Updates" href="/dashboard/brokers" hrefLabel="Manage">
           {brokerIds.length === 0 ? <Empty>Follow brokers to see their updates here. <Link href="/brokers" className="text-gold-400 underline">Browse brokers</Link></Empty>
             : (followed.data ?? []).length ? (followed.data as unknown as Article[]).map((a) => <NewsCard key={a.id} a={a} variant="compact" />)
