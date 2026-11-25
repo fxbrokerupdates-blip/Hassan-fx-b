@@ -33,7 +33,7 @@ export async function PromptLibrary({ sp, basePath }: { sp: RawParams; basePath:
   };
   const res = await listPrompts(q, db);
   return (
-    <div>
+    <div className="fx-content-library">
       <form className="card-plain grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-6" role="search" aria-label="Filter prompts">
         <input name="q" defaultValue={q.q} placeholder="Search prompts…" className="input lg:col-span-2" aria-label="Search prompts" />
         <Select name="category" value={q.category} label="All categories" options={[...PROMPT_CATEGORIES]} />
@@ -47,7 +47,7 @@ export async function PromptLibrary({ sp, basePath }: { sp: RawParams; basePath:
       {res.items.length === 0 ? (
         <p className="mt-6 rounded-xl border border-dashed border-white/15 p-12 text-center text-white/70">No prompts published for these filters yet.</p>
       ) : (
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 fx-prompt-grid">
           {res.items.map((p) => <PromptCard key={p.id} p={p} signedIn={Boolean(viewer)} basePath={basePath} />)}
         </div>
       )}
@@ -65,7 +65,7 @@ export async function ScriptLibrary({ sp, basePath }: { sp: RawParams; basePath:
   };
   const res = await listScripts(q, db);
   return (
-    <div>
+    <div className="fx-content-library">
       <form className="card-plain grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-5" role="search" aria-label="Filter scripts">
         <input name="q" defaultValue={q.q} placeholder="Search scripts…" className="input lg:col-span-2" aria-label="Search scripts" />
         <Select name="duration" value={q.duration ? String(q.duration) : undefined} label="Any duration" options={DURATIONS.map((d) => ({ value: String(d), label: durationLabel(d) }))} />
@@ -78,7 +78,7 @@ export async function ScriptLibrary({ sp, basePath }: { sp: RawParams; basePath:
       {res.items.length === 0 ? (
         <p className="mt-6 rounded-xl border border-dashed border-white/15 p-12 text-center text-white/70">No scripts published for these filters yet.</p>
       ) : (
-        <div className="mt-6 grid gap-5 lg:grid-cols-2">{res.items.map((s) => <ScriptCard key={s.id} s={s} basePath={basePath} />)}</div>
+        <div className="mt-6 grid gap-5 lg:grid-cols-2 fx-script-grid">{res.items.map((s) => <ScriptCard key={s.id} s={s} basePath={basePath} />)}</div>
       )}
       <Pagination page={res.page} total={res.total} pageSize={res.pageSize} basePath={basePath} params={flatParams(sp)} />
     </div>
