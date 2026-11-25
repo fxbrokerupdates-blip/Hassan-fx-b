@@ -1,3 +1,4 @@
+import {PublicTerminalSidebar} from "@/components/layout/public-terminal-sidebar";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -16,9 +17,9 @@ export default async function PublicLayout({ children }: { children: React.React
           Development mode — Supabase is not configured. Items marked SAMPLE are placeholders, not real news.
         </div>
       )}
-      <div className="fx-public-shell"><Header premium nav={config.nav} logoUrl={g.logo_url} siteName={g.name} />
+      <div className="fx-public-shell fx-public-terminal-shell"><PublicTerminalSidebar nav={config.nav} flags={config.flags} logoUrl={g.logo_url} name={g.name}/><div className="fx-public-workspace"><Header premium nav={config.nav} logoUrl={g.logo_url} siteName={g.name} />
       <main id="main" className="fx-public-main">{maintenance.enabled ? <MaintenanceNotice message={maintenance.message} /> : children}</main>
-      <Footer config={config} />
+      <Footer config={config} /></div>
       {!maintenance.enabled && <MobileNav/>}</div>
     </>
   );
