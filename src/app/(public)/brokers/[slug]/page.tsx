@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { BadgeCheck, Building2, ExternalLink, ShieldAlert } from "lucide-react";
+import { pricingFor, roundTurnUsd } from "@/lib/data/broker-pricing";
 import { getBroker } from "@/lib/data/brokers";
 import { listNews } from "@/lib/data/news";
 import { PageHeader } from "@/components/news/page-header";
@@ -117,6 +118,11 @@ export default async function BrokerProfilePage({ params }: Props) {
             <p className="mt-2 text-xs text-muted">Always confirm license status directly on the regulator’s official register.</p>
           </section>
 
+          <section>
+            <h2 className="section-title mb-3">EUR/USD <span className="gold-text">trading costs</span></h2>
+            {!b.is_sample && pricingFor(b.slug).length > 0 ? <div className="card-plain overflow-x-auto"><table className="table-clean"><thead><tr><th>Entity &amp; account</th><th>Min / avg spread</th><th>USD commission / side</th><th>Retail leverage</th><th>Estimated avg round turn</th></tr></thead><tbody>{pricingFor(b.slug).map(p=><tr key={p.account}><td>{p.entity}<br/>{p.account} · {p.platform}<br/><span className="text-xs text-muted">USD account · {p.checkedOn}</span></td><td>{p.minPips ?? "—"} / {p.avgPips ?? "—"} pips</td><td>{p.commissionUsdPerLotSide === null ? "—" : "$"+p.commissionUsdPerLotSide}</td><td>{p.retailLeverage ?? "Not recorded"}</td><td>{roundTurnUsd(p,"average") === null ? "—" : "$"+roundTurnUsd(p,"average")?.toFixed(2)}</td></tr>)}</tbody></table></div> : <p className="text-sm text-muted">Entity-specific pricing not yet recorded.</p>}
+            <p className="mt-2 text-xs text-muted">Not live quotes. Cost estimates are for one standard lot, excluding financing, slippage and other charges. Refer to the source links below and confirm current terms.</p>
+          </section>
           <section>
             <h2 className="section-title mb-3">Evidence <span className="gold-text">&amp; sources</span></h2>
             <p className="mb-3 text-xs text-muted">Broker disclosures are not independent regulatory verification. Availability and terms vary by legal entity.</p>
