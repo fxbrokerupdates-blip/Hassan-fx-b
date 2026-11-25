@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import {
-  Bell, Bookmark, Building2, FileText, Heart, History, Home, Image as ImageIcon, LayoutDashboard, LifeBuoy, LogOut, Menu,
+  BarChart3, CalendarDays, Calculator, Users, Search, ArrowUpRight, Bell, Bookmark, Building2, FileText, Heart, History, Home, Image as ImageIcon, LayoutDashboard, LifeBuoy, LogOut, Menu,
   Newspaper, Settings, Shield, Sparkles, TrendingUp, User, Video, X,
 } from "lucide-react";
 import { Logo } from "@/components/layout/logo";
@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 export interface ShellItem { href: string; label: string; icon: string; badge?: number }
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  dashboard: LayoutDashboard, broker: Building2, trading: TrendingUp, news: Newspaper, prompts: ImageIcon, scripts: Video,
+  market:BarChart3,calendar:CalendarDays,tools:Calculator,community:Users,dashboard: LayoutDashboard, broker: Building2, trading: TrendingUp, news: Newspaper, prompts: ImageIcon, scripts: Video,
   studio: Sparkles, brokers: Heart, saved: Bookmark, history: History, bell: Bell, user: User, settings: Settings,
   help: LifeBuoy, home: Home, file: FileText, shield: Shield,
 };
@@ -47,17 +47,18 @@ function Nav({ items, onNavigate }: { items: ShellItem[]; onNavigate?: () => voi
   );
 }
 
-export function Shell({ items, bottom, title, user, children, variant = "member", topLinks }: {
-  items: ShellItem[]; bottom?: ShellItem[]; title: string; user: { name: string; email: string; isStaff: boolean };
+export function Shell({ items, desktopItems, unread=0, bottom, title, user, children, variant = "member", topLinks }: {
+  items: ShellItem[]; desktopItems?:ShellItem[]; unread?:number; bottom?: ShellItem[]; title: string; user: { name: string; email: string; isStaff: boolean };
   children: React.ReactNode; variant?: "member" | "admin"; topLinks?: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="min-h-screen bg-navy-950 lg:grid lg:grid-cols-[260px_1fr]">
-      <aside className="sticky top-0 hidden h-screen flex-col overflow-y-auto border-r border-white/10 bg-navy-900 p-4 scrollbar-thin lg:flex">
+    <div className="min-h-screen bg-navy-950 lg:grid lg:grid-cols-[260px_1fr] fx-terminal-shell fx-member-shell">
+      <aside className="fx-terminal-sidebar sticky top-0 hidden h-screen flex-col overflow-y-auto border-r border-white/10 bg-navy-900 p-4 scrollbar-thin lg:flex">
         <Logo className="mb-2" />
         <p className="mb-4 px-1 text-[11px] font-semibold uppercase tracking-widest text-gold-400">{variant === "admin" ? "Admin Panel" : "Member Area"}</p>
-        <Suspense><Nav items={items} /></Suspense>
+        <Suspense><Nav items={desktopItems??items} /></Suspense>
+        <div className="fx-member-access"><Shield size={19}/><strong>Member Workspace</strong><p>Market research, content and trading tools.</p><Link href="/dashboard/settings">Manage preferences <ArrowUpRight size={13}/></Link></div>
         <div className="mt-auto border-t border-white/10 pt-3">
           {user.isStaff && variant === "member" && (
             <Link href="/admin" className="flex items-center gap-3 rounded-lg px-3 py-2 text-[15px] text-white/85 hover:bg-white/5"><Shield className="size-[18px]" />Admin Panel</Link>
@@ -72,9 +73,9 @@ export function Shell({ items, bottom, title, user, children, variant = "member"
       </aside>
 
       <div className="min-w-0">
-        <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-white/10 bg-navy-900/95 px-4 backdrop-blur lg:px-8">
+        <header className="fx-terminal-topbar sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-white/10 bg-navy-900/95 px-4 backdrop-blur lg:px-8">
           <button className="lg:hidden" aria-label="Open menu" onClick={() => setOpen(true)}><Menu className="size-6" /></button>
-          <h1 className="truncate font-display text-lg font-bold">{title}</h1>
+          <h1 className="fx-terminal-top-title truncate font-display text-lg font-bold">{title}</h1><form action="/search" className="fx-terminal-global-search" role="search"><Search size={17}/><input name="q" maxLength={120} aria-label="Search website" placeholder="Search brokers, news, markets, tools…"/><button type="submit">Search</button></form><div className="fx-terminal-top-links"><Link href="/dashboard/saved" aria-label="Saved content"><Bookmark size={19}/></Link><Link href="/dashboard/notifications" aria-label="Notifications"><Bell size={19}/>{unread>0&&<span>{Math.min(unread,99)}</span>}</Link></div>
           <div className="ml-auto flex items-center gap-3">
             {topLinks}
             <Link href="/" className="hidden text-sm text-white/70 hover:text-gold-400 sm:inline">View website</Link>
@@ -85,7 +86,7 @@ export function Shell({ items, bottom, title, user, children, variant = "member"
             <span className="grid size-8 place-items-center rounded-full bg-gold-500 font-bold text-navy-950">{user.name.slice(0, 1).toUpperCase()}</span>
           </div>
         </header>
-        <main id="main" className="px-4 pb-24 pt-6 lg:px-8 lg:pb-10">{children}</main>
+        <main id="main" className="fx-terminal-main px-4 pb-24 pt-6 lg:px-8 lg:pb-10">{children}</main>
       </div>
 
       {bottom && (
