@@ -12,7 +12,7 @@ const FAQ = [
 
 export default function SupportPage() {
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="max-w-4xl space-y-6 fx-member-support">
       <h2 className="font-display text-2xl font-bold">Help & <span className="gold-text">Support</span></h2>
       <section className="card-plain divide-y divide-white/5">
         {FAQ.map(([q, a]) => (
