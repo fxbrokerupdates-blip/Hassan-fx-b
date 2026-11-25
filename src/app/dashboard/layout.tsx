@@ -30,6 +30,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     { href: "/dashboard/brokers", label: "Favourite Brokers", icon: "brokers" },
     { href: "/dashboard/ib", label: "IB Center", icon: "brokers" },
     { href: "/dashboard/trader", label: "Trader Workspace", icon: "trading" },
+    { href: "/dashboard/community", label: "Community", icon: "brokers" },
     { href: "/dashboard/saved", label: "Saved Content", icon: "saved" },
     { href: "/dashboard/history", label: "My Content History", icon: "history" },
     { href: "/dashboard/notifications", label: "Notifications", icon: "bell", badge: unread ?? 0 },
