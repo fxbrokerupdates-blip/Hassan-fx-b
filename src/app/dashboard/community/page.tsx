@@ -1,0 +1,29 @@
+import Link from "next/link";
+import {redirect} from "next/navigation";
+import {z} from "zod";
+import {requireUser} from "@/lib/auth";
+import {createSupabaseServer} from "@/lib/supabase/server";
+import {rateLimit} from "@/lib/security/rate-limit";
+const URL="/dashboard/community";
+const categories=["education","market-discussion","trade-idea","risk-management"] as const;
+const reasons=["spam","scam","harassment","misleading","other"] as const;
+const name=z.string().trim().min(2).max(60);
+function done(s:string):never{redirect(URL+"?result="+s);}
+async function submit(form:FormData){"use server";
+ const viewer=await requireUser(URL);if(viewer.profile?.status!=="active"||!viewer.profile.email_verified_at)done("verify");
+ if(!(await rateLimit("community:"+viewer.id,60,4)))done("limited");
+ const db=await createSupabaseServer();const action=form.get("kind");
+ if(action==="post"){const p=z.object({display_name:name,category:z.enum(categories),title:z.string().trim().min(5).max(160),body:z.string().trim().min(20).max(4000)}).safeParse(Object.fromEntries(form));if(!p.success)done("invalid");const {error}=await db.from("community_posts").insert({...p.data,user_id:viewer.id});done(error?"failed":"saved");}
+ if(action==="comment"){const p=z.object({post_id:z.string().uuid(),display_name:name,body:z.string().trim().min(5).max(1500)}).safeParse(Object.fromEntries(form));if(!p.success)done("invalid");const {error}=await db.from("community_comments").insert({...p.data,user_id:viewer.id});done(error?"failed":"saved");}
+ if(action==="report"){const p=z.object({post_id:z.string().uuid(),reason:z.enum(reasons)}).safeParse(Object.fromEntries(form));if(!p.success)done("invalid");const {error}=await db.from("community_post_reports").insert({...p.data,user_id:viewer.id});done(error?"failed":"saved");}
+ done("invalid");
+}
+const messages:Record<string,string>={saved:"Submitted for moderation.",verify:"An active email-verified account is required.",invalid:"Check the submitted fields.",failed:"Unable to submit. A duplicate report or unavailable discussion may be the reason.",limited:"Too many submissions. Try again later."};
+export default async function MemberCommunity({searchParams}:{searchParams:Promise<{result?:string;post?:string}>}){
+ const viewer=await requireUser(URL);const db=await createSupabaseServer();const sp=await searchParams;
+ const [mine,comments,posts]=await Promise.all([db.from("community_posts").select("id,title,status,created_at").eq("user_id",viewer.id).order("created_at",{ascending:false}).limit(100),db.from("community_comments").select("id,body,status").eq("user_id",viewer.id).order("created_at",{ascending:false}).limit(50),db.from("community_posts").select("id,title").eq("status","approved").order("created_at",{ascending:false}).limit(100)]);
+ return <div className="space-y-5"><h1 className="section-title">My Community</h1><Link href="/community" className="text-gold-400">Browse public discussions</Link>{sp.result&&messages[sp.result]&&<p role="status">{messages[sp.result]}</p>}{(mine.error||comments.error||posts.error)&&<p role="alert">Some records could not be loaded.</p>}<section className="card-plain p-4 space-y-3"><h2 className="font-semibold">Start a discussion</h2><p className="text-xs text-muted">Use a public display name, not your email or private contact details. Content is reviewed before publication.</p><form action={submit} className="space-y-3"><input type="hidden" name="kind" value="post"/><label className="block">Display name<input name="display_name" className="input" minLength={2} maxLength={60} required/></label><label className="block">Category<select name="category" className="input">{categories.map(c=><option key={c} value={c}>{c.replaceAll("-"," ")}</option>)}</select></label><label className="block">Title<input name="title" className="input" minLength={5} maxLength={160} required/></label><label className="block">Discussion<textarea name="body" className="input" rows={5} minLength={20} maxLength={4000} required/></label><button className="btn-gold px-4 py-2">Submit post</button></form></section>
+ <section id="reply" className="card-plain p-4 space-y-3"><h2 className="font-semibold">Reply to a discussion</h2><form action={submit} className="space-y-3"><input type="hidden" name="kind" value="comment"/><label className="block">Discussion<select name="post_id" className="input" defaultValue={sp.post??""} required><option value="">Select a discussion</option>{(posts.data??[]).map(p=><option key={p.id} value={p.id}>{p.title}</option>)}</select></label><label className="block">Display name<input name="display_name" className="input" minLength={2} maxLength={60} required/></label><label className="block">Comment<textarea name="body" className="input" minLength={5} maxLength={1500} required/></label><button className="btn-gold px-4 py-2">Submit comment</button></form></section>
+ <section className="card-plain p-4 space-y-3"><h2 className="font-semibold">Report a discussion</h2><form action={submit} className="space-y-3"><input type="hidden" name="kind" value="report"/><label className="block">Discussion<select name="post_id" defaultValue={sp.post??""} className="input" required><option value="">Select a discussion</option>{(posts.data??[]).map(p=><option key={p.id} value={p.id}>{p.title}</option>)}</select></label><label className="block">Reason<select name="reason" className="input">{reasons.map(r=><option key={r}>{r}</option>)}</select></label><button className="btn-outline px-4 py-2">Report privately</button></form></section>
+ <section className="card-plain p-4 space-y-2"><h2 className="font-semibold">My submissions</h2>{(mine.data??[]).map(p=><p key={p.id} className="text-sm">{p.title} · {p.status}</p>)}{(comments.data??[]).map(c=><p key={c.id} className="text-sm break-words">{c.body} · {c.status}</p>)}{!mine.data?.length&&!comments.data?.length&&<p className="text-sm text-muted">No submissions yet.</p>}</section></div>;
+}
