@@ -59,6 +59,7 @@ export function Studio({ adminStudio = false, providerReady, initial, remaining 
   async function generate() {
     setBusy(true); setErr(null); setNote(null);
     const source_type = kind === "broker" || kind === "trading" ? "article" : kind;
+    try {
     const res = await fetch("/api/ai/generate", {
       method: "POST", headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -70,13 +71,15 @@ export function Studio({ adminStudio = false, providerReady, initial, remaining 
       }),
     });
     const j = await res.json().catch(() => ({}));
-    setBusy(false);
     if (!res.ok) { setErr(j.error ?? "Generation failed."); return; }
+    if (typeof j.id !== "string" || typeof j.output !== "string" || !j.output.trim()) { setErr("The provider returned an invalid response."); return; }
     setGen(j); setDraft(j.output); setSaved(false); setUsed((u) => u + 1);
+    } catch { setErr("Could not connect to the generation service. Please try again."); }
+    finally { setBusy(false); }
   }
 
   async function copy() {
-    await navigator.clipboard.writeText(draft).catch(() => undefined);
+    try { await navigator.clipboard.writeText(draft); } catch { setNote("Copy failed. Select and copy the text manually."); return; }
     setNote("Copied to clipboard.");
     if (gen) track("ai_output_copy", { content_type: "ai_generation", content_id: gen.id });
   }
@@ -94,7 +97,8 @@ export function Studio({ adminStudio = false, providerReady, initial, remaining 
   }
   async function remove() {
     if (!gen || !confirm("Delete this generated content permanently?")) return;
-    await deleteGenerationAction(gen.id);
+    const result = await deleteGenerationAction(gen.id);
+    if (result?.error) { setNote(result.error); return; }
     setGen(null); setDraft(""); setNote("Deleted.");
   }
   function download() {
