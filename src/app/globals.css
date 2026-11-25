@@ -773,3 +773,5 @@ a.fx-partner-card:hover{border-color:#f5c542;background-color:#253b4b}
 .fx-tools-page-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .fx-member-embedded .fx-directory-columns,.fx-member-embedded .fx-directory-row{grid-template-columns:1.4fr .9fr .8fr 1.1fr}
 }
+
+.fx-member-news-tabs{display:none}@media(min-width:1024px){.fx-member-news-tabs{display:flex;gap:8px;margin:12px 16px 0;padding:6px;background:#102637;border:1px solid #385368;border-radius:9px}.fx-member-news-tabs>a{padding:8px 14px;font-size:12px;color:#c3d5e4;border-radius:6px}.fx-member-news-tabs>a[aria-current=page]{background:linear-gradient(#ffdd79,#dca443);color:#071725;font-weight:750}}
