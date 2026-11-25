@@ -1,0 +1,12 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { PageHeader } from "@/components/news/page-header";
+import { pageMetadata } from "@/lib/seo";
+export const metadata:Metadata=pageMetadata({title:"Broker Safety & Regulatory Warnings",description:"Check official regulator warning lists and legal entities before trading.",path:"/broker-warnings"});
+const sources=[
+ {name:"FCA — United Kingdom",warning:"https://www.fca.org.uk/consumers/warning-list-unauthorised-firms",register:"https://www.fca.org.uk/consumers/how-check-firm-individual-authorised"},
+ {name:"CySEC — Cyprus",warning:"https://www.cysec.gov.cy/en-GB/investor-protection/warnings/cysec",register:"https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/"},
+ {name:"Securities Commission Malaysia",warning:"https://www.sc.com.my/resources/media/investor-alert-updates",register:null},
+ {name:"DFSA — Dubai International Financial Centre",warning:null,register:"https://www.dfsa.ae/public-register/firms"},
+];
+export default function BrokerWarningsPage(){return <><PageHeader title="Broker" gold="Safety Center" description="Official sources for identifying unauthorized firms, clone websites and regulatory warnings." crumbs={[{name:"Home",path:"/"},{name:"Broker Safety",path:"/broker-warnings"}]}/><div className="container-site py-8 space-y-5"><section className="card-plain p-5"><h2 className="section-title">Check before you trade</h2><p className="mt-2 text-sm text-white/75">Match the legal entity, website domain, license number and permitted activities directly with the regulator. A valid license for one entity does not authorize all group entities or countries. Absence from a warning list does not establish safety. We do not automatically label firms as scams.</p><Link href="/brokers" className="text-gold-400 text-sm mt-3 inline-block">Broker directory and license sources</Link></section><div className="grid gap-4 sm:grid-cols-2">{sources.map(s=><article key={s.name} className="card-plain p-5"><h2 className="font-semibold">{s.name}</h2><div className="mt-3 flex flex-wrap gap-3">{s.warning&&<a href={s.warning} target="_blank" rel="noopener noreferrer" className="btn-outline px-3 py-2">Official warnings</a>}{s.register&&<a href={s.register} target="_blank" rel="noopener noreferrer" className="btn-outline px-3 py-2">Official register</a>}</div></article>)}</div><p className="text-xs text-muted">These links point to the live official sources. Automatic alert ingestion is not enabled.</p></div></>;}
