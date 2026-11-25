@@ -1,0 +1,14 @@
+import Link from "next/link";
+import {PageHeader} from "@/components/news/page-header";
+import {pageMetadata} from "@/lib/seo";
+import {createSupabasePublic} from "@/lib/supabase/server";
+export const metadata=pageMetadata({title:"Trader Community",description:"Moderated trading education, market discussion and risk management.",path:"/community"});
+export const dynamic="force-dynamic";
+const categories=["education","market-discussion","trade-idea","risk-management"];
+export default async function Community({searchParams}:{searchParams:Promise<{category?:string}>}){
+ const category=(await searchParams).category??"";const db=createSupabasePublic();
+ let q=db?.from("community_posts").select("id,display_name,category,title,body,created_at").eq("status","approved").order("created_at",{ascending:false}).limit(50);
+ if(q&&categories.includes(category))q=q.eq("category",category);
+ const result=q?await q:{data:[],error:null};const posts=result.data??[];const comments=db&&posts.length?await db.from("community_comments").select("id,post_id,display_name,body,created_at").eq("status","approved").in("post_id",posts.map(p=>p.id)).order("created_at").limit(250):{data:[],error:null};
+ return <><PageHeader title="Trader" gold="Community" description="Discuss markets, share educational ideas and improve risk management together." crumbs={[{name:"Home",path:"/"},{name:"Community",path:"/community"}]}/><div className="container-site py-8 space-y-4"><Link href="/dashboard/community" className="btn-gold px-4 py-2">Join the discussion</Link><p className="text-xs text-muted">All posts and comments require moderation. No personal contact details, referral spam, guaranteed returns or account credentials. Community views are not financial advice.</p><nav className="flex flex-wrap gap-2">{["",...categories].map(c=><Link key={c} href={"/community"+(c?"?category="+c:"")} className={(c===category?"btn-gold":"btn-outline")+" px-3 py-2"}>{c?c.replaceAll("-"," "):"All"}</Link>)}</nav>{(result.error||comments.error)&&<p role="alert" className="text-amber-300">Some discussions could not be loaded.</p>}{posts.map(p=><article key={p.id} className="card-plain p-4 space-y-3"><p className="text-xs text-muted">{p.category.replaceAll("-"," ")} · {p.display_name} · {p.created_at.slice(0,10)}</p><h2 className="font-semibold text-lg">{p.title}</h2><p className="whitespace-pre-wrap break-words text-sm">{p.body}</p><div className="space-y-2">{(comments.data??[]).filter(c=>c.post_id===p.id).map(c=><div key={c.id} className="border-t border-white/10 pt-2 text-sm"><strong>{c.display_name}</strong><p className="whitespace-pre-wrap break-words">{c.body}</p></div>)}</div><Link className="text-gold-400 text-sm" href={"/dashboard/community?post="+p.id+"#reply"}>Reply or report</Link></article>)}{!posts.length&&!result.error&&<p className="card-plain p-5 text-muted">No approved discussions yet. Start a discussion after signing in.</p>}</div></>;
+}
