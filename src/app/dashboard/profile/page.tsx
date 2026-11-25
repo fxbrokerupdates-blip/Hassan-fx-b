@@ -14,7 +14,7 @@ export default async function ProfilePage() {
   const viewer = await requireUser();
   const p = viewer.profile!;
   return (
-    <div className="max-w-3xl space-y-6">
+    <div className="max-w-3xl space-y-6 fx-member-account">
       <h2 className="font-display text-2xl font-bold">My <span className="gold-text">Profile</span></h2>
       <section className="card-plain space-y-5 p-6">
         <AvatarUpload userId={viewer.id} current={p.avatar_url} name={p.full_name || "M"} />
