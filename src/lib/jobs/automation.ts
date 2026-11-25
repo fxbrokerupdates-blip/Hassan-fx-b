@@ -29,30 +29,29 @@ export function parseScriptSections(text: string) {
 export async function runDailyAutomation(force = false): Promise<Record<string, unknown>> {
   const db = createSupabaseAdmin();
   if (!db) throw new Error("Service role not configured");
-  const { data: s } = await db.from("website_settings").select("value").eq("key", "automation.daily").maybeSingle();
+  const { data: s, error: settingsError } = await db.from("website_settings").select("value").eq("key", "automation.daily").maybeSingle();
+  if (settingsError) throw new Error("Unable to load automation settings");
   const cfg = (s?.value ?? {}) as AutomationSettings;
   if (!cfg.enabled && !force) return { skipped: "automation disabled" };
   const [hh, mm] = (cfg.publish_time_utc ?? "06:00").split(":").map(Number);
   const now = new Date();
   if (!force && (now.getUTCHours() * 60 + now.getUTCMinutes()) < hh * 60 + (mm || 0)) return { skipped: "before publish time" };
   const today = now.toISOString().slice(0, 10);
-  if (!force) {
-    const { count } = await db.from("banner_prompts").select("id", { count: "exact", head: true }).contains("tags", ["auto"]).eq("publish_date", today);
-    if ((count ?? 0) > 0) return { skipped: "already generated today" };
-  }
+
   if (!cfg.auto_generate_drafts) return { skipped: "draft generation disabled" };
   const ai = await getAiSettings();
   if (!ai?.enabled || !isProviderConfigured(ai.active_provider)) throw new Error("AI provider not configured or disabled");
 
-  const { data: news } = await db.from("news_articles").select("id,title,summary,content,source_name,original_url,published_at,news_type,market,priority")
-    .eq("status", "published").gte("published_at", new Date(Date.now() - 36 * 3600_000).toISOString())
+  const { data: news, error: newsError } = await db.from("news_articles").select("id,title,summary,content,source_name,original_url,published_at,news_type,market,priority")
+    .eq("status", "published").eq("is_sample", false).gte("published_at", new Date(Date.now() - 36 * 3600_000).toISOString())
     .order("priority", { ascending: true }).order("view_count", { ascending: false }).limit(20);
+  if (newsError) throw new Error("Unable to load published source articles");
   const items = news ?? [];
   if (!items.length) return { skipped: "no recent published news" };
   const system = buildSystemPrompt(ai.system_instructions, []);
   const status = cfg.auto_publish && !cfg.require_approval ? "published" : "draft";
   const langs = cfg.languages?.length ? cfg.languages : ["en"];
-  let prompts = 0, scripts = 0;
+  let prompts = 0, scripts = 0, alreadyPresent = 0, failures = 0;
   const call = async (contentType: string, a: (typeof items)[number], extra: Record<string, unknown>) => {
     const started = Date.now();
     const user = buildUserPrompt({ content_type: contentType, tone: "Professional", include_cta: true, include_hashtags: false, ...extra },
@@ -70,25 +69,35 @@ export async function runDailyAutomation(force = false): Promise<Record<string, 
     const a = items[i % items.length];
     const ratio = RATIOS[i % RATIOS.length];
     const lang = langs[i % langs.length];
+    const existing = await db.from("banner_prompts").select("id",{count:"exact",head:true}).eq("publish_date",today).eq("related_article_id",a.id).eq("aspect_ratio",ratio).eq("language",lang);
+    if(existing.error) throw new Error("Unable to check existing banner prompts");
+    if((existing.count??0)>0){alreadyPresent++;continue;}
     const text = await call("banner_prompt", a, { aspect_ratio: ratio, language: lang });
-    if (!text) continue;
+    if (!text) {failures++;continue;}
     const category = a.news_type === "broker" ? "broker_news" : a.market === "gold" ? "gold" : a.market === "forex" ? "forex" : a.market === "crypto" ? "crypto" : "trading_news";
-    await db.from("banner_prompts").insert({ title: truncate(`Banner: ${a.title}`, 200), prompt_text: text.slice(0, 8000), category, aspect_ratio: ratio, language: lang,
+    const promptWrite = await db.from("banner_prompts").insert({ title: truncate(`Banner: ${a.title}`, 200), prompt_text: text.slice(0, 8000), category, aspect_ratio: ratio, language: lang,
       related_article_id: a.id, publish_date: today, status, published_at: status === "published" ? now.toISOString() : null, tags: ["auto"] });
+    if(promptWrite.error){failures++;continue;}
     prompts++;
   }
   const durations = cfg.durations?.length ? cfg.durations : [40];
   for (let i = 0; i < Math.min(cfg.scripts_count ?? 2, 10); i++) {
     const a = items[(i + 1) % items.length];
-    const d = durations[i % durations.length];
+    const selectedDuration = durations[i % durations.length];
+    const d = [15,30,40,60,90,120].includes(selectedDuration)?selectedDuration:40;
     const lang = langs[i % langs.length];
+    const existing = await db.from("video_scripts").select("id",{count:"exact",head:true}).eq("publish_date",today).eq("related_article_id",a.id).eq("duration_seconds",d).eq("language",lang);
+    if(existing.error) throw new Error("Unable to check existing video scripts");
+    if((existing.count??0)>0){alreadyPresent++;continue;}
     const text = await call(d >= 90 ? "long_video_script" : "short_video_script", a, { duration_seconds: d, language: lang });
-    if (!text) continue;
+    if (!text) {failures++;continue;}
     const sec = parseScriptSections(text);
-    await db.from("video_scripts").insert({ title: truncate(a.title, 200), topic: a.news_type === "broker" ? "Broker news" : "Market update",
+    const scriptWrite = await db.from("video_scripts").insert({ title: truncate(a.title, 200), topic: a.news_type === "broker" ? "Broker news" : "Market update",
       hook: sec.hook.slice(0, 2000), body: sec.body.slice(0, 8000), closing: sec.closing, cta: sec.cta, duration_seconds: [15, 30, 40, 60, 90, 120].includes(d) ? d : 40,
       language: lang, related_article_id: a.id, publish_date: today, status, published_at: status === "published" ? now.toISOString() : null });
+    if(scriptWrite.error){failures++;continue;}
     scripts++;
   }
-  return { prompts, scripts, status };
+  if(failures) throw new Error(`Daily automation incomplete: ${prompts} prompts and ${scripts} scripts saved, ${failures} failed. Retry skips matching existing items.`);
+  return { prompts, scripts, alreadyPresent, status };
 }
