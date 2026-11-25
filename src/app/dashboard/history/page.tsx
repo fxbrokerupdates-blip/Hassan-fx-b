@@ -26,7 +26,7 @@ export default async function HistoryPage({ searchParams }: { searchParams: Prom
   const { data: arts } = artIds.length ? await supabase.from("news_articles").select("id,title").in("id", artIds) : { data: [] };
   const titleOf = new Map((arts ?? []).map((a) => [a.id, a.title]));
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 fx-member-history">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <h2 className="font-display text-2xl font-bold">My Content <span className="gold-text">History</span></h2>
         <Link href="/dashboard/studio" className="btn-gold h-10 px-4">New creation</Link>
