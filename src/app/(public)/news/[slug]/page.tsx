@@ -137,7 +137,8 @@ export default async function ArticlePage({ params }: Props) {
           <p className="mt-8 text-xs text-muted">{config.settings["site.footer"].risk_disclaimer}</p>
         </div>
 
-        <aside className="space-y-6">
+        <aside className="space-y-6 fx-article-aside">
+          <section className="fx-profile-jump card-plain"><h2>Research this story</h2>{a.source_name&&<p className="text-sm text-muted">{a.source_name}</p>}{a.original_published_at&&<p className="text-xs text-muted">Source date: {formatDate(a.original_published_at)}</p>}<a href="#article-body">Read article</a><Link href="/economic-calendar">Economic calendar</Link><Link href="/market-intelligence">Market intelligence</Link></section>
           <AdSlot placement="article_page" />
           <section className="card-plain p-4">
             <h2 className="mb-3 font-display text-lg font-bold">Related <span className="gold-text">news</span></h2>
