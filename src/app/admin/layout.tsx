@@ -29,6 +29,7 @@ const NAV: { href: string; label: string; icon: string; perm: string; group: str
   { href: "/admin/r/prompts", label: "Banner Prompts", icon: "image", perm: "prompts.manage", group: "Content" },
   { href: "/admin/r/scripts", label: "Video Scripts", icon: "video", perm: "scripts.manage", group: "Content" },
   { href: "/admin/r/reports", label: "Content Reports", icon: "flag", perm: "content_reports.manage", group: "Content" },
+  { href: "/admin/community", label: "Community Moderation", icon: "users", perm: "content_reports.manage", group: "Content" },
   { href: "/admin/media", label: "Media Library", icon: "image", perm: "dashboard.view", group: "Content" },
   { href: "/admin/r/sources", label: "News Sources", icon: "rss", perm: "sources.manage", group: "Automation" },
   { href: "/admin/jobs", label: "Jobs & Refresh", icon: "refresh", perm: "jobs.manage", group: "Automation" },
