@@ -47,6 +47,7 @@ export default async function DashboardHome() {
           <p className="mt-1 text-white/75">Here’s what’s new in broker and market news today.</p>
         </div>
         <div className="flex flex-wrap gap-2">
+          <Link href="/dashboard/trader" className="btn-gold h-11 px-5">Trader Workspace</Link>
           <Link href="/dashboard/studio" className="btn-gold h-11 px-5"><Sparkles className="size-5" />Open AI Creator Studio</Link>
           <Link href="/dashboard/settings#preferences" className="btn-outline h-11 px-4"><Settings2 className="size-4" />Personalize</Link>
         </div>
