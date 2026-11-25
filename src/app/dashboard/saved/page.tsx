@@ -45,7 +45,7 @@ export default async function SavedPage({ searchParams }: { searchParams: Promis
     return `/dashboard/saved${p.toString() ? `?${p}` : ""}`;
   };
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 fx-member-saved">
       <h2 className="font-display text-2xl font-bold">Saved <span className="gold-text">Content</span></h2>
       <div className="flex flex-wrap gap-2">
         {TYPES.map(([k, l]) => <Link key={k} href={link({ type: k })} className={cn("rounded-full px-3 py-1.5 text-sm ring-1", type === k ? "bg-gold-500 font-semibold text-navy-950 ring-gold-500" : "ring-white/15")}>{l}</Link>)}
