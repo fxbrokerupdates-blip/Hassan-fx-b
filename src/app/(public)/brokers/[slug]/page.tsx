@@ -40,7 +40,7 @@ export default async function BrokerProfilePage({ params }: Props) {
   const { slug } = await params;
   const d = await getBroker(slug);
   if (!d) notFound();
-  const { broker: b, regulations, promotions, reviews } = d;
+  const { broker: b, regulations, promotions, reviews, sources } = d;
   const news = await listNews({ broker: slug, pageSize: 6 });
   const editorial = reviews.filter((r) => r.review_type === "editorial");
   const userReviews = reviews.filter((r) => r.review_type === "user");
@@ -117,6 +117,11 @@ export default async function BrokerProfilePage({ params }: Props) {
             <p className="mt-2 text-xs text-muted">Always confirm license status directly on the regulator’s official register.</p>
           </section>
 
+          <section>
+            <h2 className="section-title mb-3">Evidence <span className="gold-text">&amp; sources</span></h2>
+            <p className="mb-3 text-xs text-muted">Broker disclosures are not independent regulatory verification. Availability and terms vary by legal entity.</p>
+            {sources.length ? <ul className="card-plain divide-y divide-white/10 px-4">{sources.map((s,i) => <li key={i} className="py-3 text-sm">{/^https:\/\//.test(s.url) ? <a href={s.url} target="_blank" rel="noopener noreferrer nofollow" className="text-gold-400 hover:underline">{s.label}</a> : <span>{s.label}</span>}<span className="mt-1 block text-xs text-muted">Source recorded {formatDate(s.checked_at)} · {s.source_kind.replaceAll("_"," ")}</span></li>)}</ul> : <p className="text-sm text-muted">No supporting sources recorded yet.</p>}
+          </section>
           {promotions.length > 0 && (
             <section>
               <h2 className="section-title mb-3">Current <span className="gold-text">promotions</span></h2>
