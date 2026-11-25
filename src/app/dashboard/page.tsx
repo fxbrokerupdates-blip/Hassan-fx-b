@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {DesktopOverview} from "@/components/dashboard/desktop-overview";
 import { Bell, Flame, Settings2, Sparkles } from "lucide-react";
 import { requireUser } from "@/lib/auth";
 import { createSupabaseServer } from "@/lib/supabase/server";
@@ -39,7 +40,7 @@ export default async function DashboardHome() {
     s.content_type === "article" ? `/dashboard/saved` : s.content_type === "ai_generation" ? `/dashboard/history?id=${s.content_id}` : "/dashboard/saved";
 
   return (
-    <div className="space-y-6">
+    <><DesktopOverview name={first} userId={viewer.id} articles={[...(broker.data??[]),...(trading.data??[]),...(hot.data??[])] as unknown as Article[]}/><div className="space-y-6 fx-member-legacy">
       <section className="card-navy flex flex-wrap items-center gap-4 p-6">
         <div className="flex-1">
           <p className="text-sm text-muted">{new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: tz }).format(new Date())}</p>
@@ -119,6 +120,6 @@ export default async function DashboardHome() {
           ) : <Empty>Create your first post in the AI Creator Studio.</Empty>}
         </Panel>
       </div>
-    </div>
+    </div></>
   );
 }
