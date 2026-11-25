@@ -16,6 +16,7 @@ export function NewsFilters({ categories, brokers, markets, showType, showImpact
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const params = new URLSearchParams();
+    for (const k of ["tab","month"]) { const val=sp.get(k); if(val) params.set(k,val); }
     for (const [k, v] of fd.entries()) {
       const s = v.toString().trim();
       if (s) params.set(k, s);
@@ -29,7 +30,7 @@ export function NewsFilters({ categories, brokers, markets, showType, showImpact
   const active = [...sp.keys()].filter((k) => k !== "page").length > 0;
 
   return (
-    <form onSubmit={onSubmit} className="card-plain grid gap-3 p-4 md:grid-cols-2 lg:grid-cols-4" role="search" aria-label="Filter news">
+    <form onSubmit={onSubmit} className="fx-news-filters card-plain grid gap-3 p-4 md:grid-cols-2 lg:grid-cols-4" role="search" aria-label="Filter news">
       <div className="relative md:col-span-2">
         <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" />
         <input name="q" defaultValue={v("q")} placeholder="Search headlines…" aria-label="Search" className="input pl-9" maxLength={120} />
