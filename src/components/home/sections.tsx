@@ -17,8 +17,8 @@ export function Hero({ data }: { data: HomepageContent["hero"] }) {
     <section className="relative isolate overflow-hidden bg-[radial-gradient(ellipse_at_20%_20%,#0d2c52_0%,var(--deep-navy)_45%,var(--dark-navy)_100%)]">
       {/* faint skyline texture */}
       <div aria-hidden className="absolute inset-0 -z-10 opacity-30 [background:linear-gradient(180deg,transparent_60%,rgb(3_18_34/0.9)),repeating-linear-gradient(90deg,transparent_0_38px,rgb(255_255_255/0.025)_38px_40px)]" />
-      <div className="relative lg:min-h-[294px]">
-        <div className="relative h-[220px] w-full sm:h-[300px] lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[52%]">
+      <div className="relative lg:min-h-[252px]">
+        <div className="relative h-[152px] w-full sm:h-[220px] lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[52%]">
           <Image src={data.image_url || "/images/hero-markets.webp"} alt="Global markets, trading charts and broker industry illustration"
             fill priority sizes="(min-width:1024px) 52vw, 100vw"
             className="object-cover object-left lg:[mask-image:linear-gradient(90deg,transparent_0%,#000_14%)]" />
@@ -30,11 +30,11 @@ export function Hero({ data }: { data: HomepageContent["hero"] }) {
               <span className="grid size-[26px] place-items-center rounded-full bg-navy-950 text-gold-400"><Megaphone className="size-4" /></span>
               {data.badge}
             </p>
-            <h1 className="mt-2.5 font-display text-[26px] font-extrabold leading-[1.02] tracking-[-0.01em] sm:text-[40px]">
+            <h1 className="mt-2.5 font-display text-[24px] font-extrabold leading-[1.02] tracking-[-0.01em] sm:text-[36px]">
               <span className="block text-white">{data.title_line1}</span>
               <span className="gold-text block">{data.title_line2}</span>
             </h1>
-            <p className="mt-2 text-[17px] leading-[1.13] text-white/95 sm:text-[19px]">{data.subtitle}</p>
+            <p className="mt-2 text-[15px] leading-[1.25] text-white/95 sm:text-[19px]">{data.subtitle}</p>
             <div className="mt-3 flex flex-wrap gap-3 sm:gap-5">
               <Link href={data.primary_href} className="btn-gold h-[42px] rounded-xl px-6 text-[19px] sm:w-[242px]">
                 <Rocket className="size-5" /> {data.primary_label} <ArrowRight className="size-5" />
