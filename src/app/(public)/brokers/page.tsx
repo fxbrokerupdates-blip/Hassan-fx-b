@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/news/page-header";
 import { listBrokers, listVerifiedLicenseRecords } from "@/lib/data/brokers";
 import { pageMetadata } from "@/lib/seo";
 import { str, type RawParams } from "@/lib/params";
+import { pricingFor, roundTurnUsd } from "@/lib/data/broker-pricing";
 import { SampleBadge } from "@/components/news/badges";
 
 export const metadata: Metadata = pageMetadata({
@@ -54,10 +55,12 @@ export default async function BrokersPage({ searchParams }: { searchParams: Prom
             <tr><th scope="row">Platforms</th>{compared.map(b=><td key={b.id}>{val(b.platforms)}</td>)}</tr>
             <tr><th scope="row">Account types</th>{compared.map(b=><td key={b.id}>{val(b.account_types)}</td>)}</tr>
             <tr><th scope="row">Minimum deposit</th>{compared.map(b=><td key={b.id}>{val(b.min_deposit)}</td>)}</tr>
+            <tr><th scope="row">EUR/USD published account pricing</th>{compared.map(b=><td key={b.id}>{!b.is_sample && pricingFor(b.slug).length ? pricingFor(b.slug).map(p=><div key={p.account} className="mb-3 border-b border-white/10 pb-3 last:border-0"><p className="font-semibold">{p.account} · {p.jurisdiction}</p><p className="text-xs text-muted">{p.entity} · {p.platform} · USD account</p><p>Min spread: {p.minPips ?? "Not recorded"} pips</p><p>Avg spread: {p.avgPips ?? "Not recorded"}{p.avgPips === null ? "" : " pips"}</p><p>Commission: {p.commissionUsdPerLotSide === null ? "Not recorded" : "$"+p.commissionUsdPerLotSide+" / lot / side"}</p><p>Retail leverage: {p.retailLeverage ?? "Not recorded"}</p><p>Est. average round turn: {roundTurnUsd(p,"average") === null ? "Not available" : "$"+roundTurnUsd(p,"average")?.toFixed(2)}</p><p className="text-xs text-muted">Checked {p.checkedOn} · {p.sources.map(s=><a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer nofollow" className="mr-2 text-gold-400 underline">{s.label}</a>)}</p></div>) : "Pricing not recorded"}</td>)}</tr>
             <tr><th scope="row">Instruments</th>{compared.map(b=><td key={b.id}>{val(b.instruments)}</td>)}</tr>
             <tr><th scope="row">Regulation sources</th>{compared.map(b=><td key={b.id}><Link className="text-gold-400" href={`/brokers/${b.slug}`}>View profile</Link></td>)}</tr>
             <tr><th scope="row">Sponsored</th>{compared.map(b=><td key={b.id}>{b.is_sponsored ? "Yes" : "No"}</td>)}</tr>
           </tbody></table>
+          <p className="mt-3 text-xs text-muted">Published pricing snapshots, not live quotes. Estimated EUR/USD round-turn cost for one standard lot in a USD account excludes financing, slippage and other fees. Minimum and average spreads are different measures. Check the relevant legal entity and account terms.</p>
         </section>}
         <form>
           <input type="hidden" name="jurisdiction" value={jurisdiction ?? ""}/><input type="hidden" name="q" value={q ?? ""}/><input type="hidden" name="platform" value={platform ?? ""}/><input type="hidden" name="sort" value={sort ?? ""}/>
