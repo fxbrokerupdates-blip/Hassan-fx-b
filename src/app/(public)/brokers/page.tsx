@@ -36,7 +36,7 @@ export default async function BrokersPage({ searchParams }: { searchParams: Prom
       <PageHeader title="Broker" gold="Intelligence" description="Research broker profiles and compare published information. A listing is not an endorsement or proof of a license."
         crumbs={[{name:"Home",path:"/"},{name:"Brokers",path:"/brokers"}]} />
       <div className="container-site py-8 fx-directory">
-        <nav aria-label="Broker intelligence sections" className="mb-5 flex flex-wrap gap-3"><Link href="/ib-programs" className="btn-outline px-4 py-2">IB Intelligence Center</Link><Link href="/broker-warnings" className="btn-outline px-4 py-2">Regulatory warnings</Link></nav>
+        <nav aria-label="Broker intelligence sections" className="mb-5 flex flex-wrap gap-3"><Link href="/compare-brokers" className="btn-gold px-4 py-2">Compare brokers</Link><Link href="/broker-regulation" className="btn-outline px-4 py-2">License checker</Link><Link href="/broker-promotions" className="btn-outline px-4 py-2">Promotions</Link><Link href="/ib-programs" className="btn-outline px-4 py-2">IB Intelligence Center</Link><Link href="/broker-warnings" className="btn-outline px-4 py-2">Regulatory warnings</Link></nav>
         <div className="card-plain mb-5 p-4 text-sm text-white/75 fx-directory-overview">
           <strong className="text-gold-400">{all.length} broker profiles</strong> · {all.filter(b=>!b.is_sample && records(b.id).length>0).length} profiles with checked entity license records.
           <p className="mt-1">Products, costs and eligibility depend on the legal entity and country. Confirm licenses directly with the regulator before opening an account.</p>
