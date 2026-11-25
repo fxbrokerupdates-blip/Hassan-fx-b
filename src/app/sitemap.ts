@@ -7,7 +7,7 @@ export const revalidate = 900;
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const statics = ["/", "/news", "/broker-updates", "/trading-updates", "/brokers", "/free-tools", "/free-tools/banner-prompts",
-    "/free-tools/video-scripts", "/market-quotes", "/market-intelligence", "/economic-calendar", "/currency-strength", "/market-sentiment", "/trading-calculators", "/ib-programs", "/broker-warnings", "/community", "/about", "/contact", "/advertise", "/privacy", "/terms", "/disclaimer", "/newsletter"]
+    "/free-tools/video-scripts", "/market-quotes", "/market-intelligence", "/economic-calendar", "/currency-strength", "/market-sentiment", "/trading-calculators", "/ib-programs", "/ib-directory", "/compare-brokers", "/broker-promotions", "/broker-regulation", "/central-banks", "/macroeconomic-data", "/legal", "/broker-warnings", "/community", "/about", "/contact", "/advertise", "/privacy", "/terms", "/disclaimer", "/newsletter"]
     .map((p) => ({ url: absoluteUrl(p), lastModified: now, changeFrequency: "hourly" as const, priority: p === "/" ? 1 : 0.7 }));
   const db = createSupabasePublic();
   if (!db) return statics;
