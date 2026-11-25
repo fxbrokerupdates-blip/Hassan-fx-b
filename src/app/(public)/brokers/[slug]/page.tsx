@@ -128,15 +128,16 @@ export default async function BrokerProfilePage({ params }: Props) {
             <p className="mb-3 text-xs text-muted">Broker disclosures are not independent regulatory verification. Availability and terms vary by legal entity.</p>
             {sources.length ? <ul className="card-plain divide-y divide-white/10 px-4">{sources.map((s,i) => <li key={i} className="py-3 text-sm">{/^https:\/\//.test(s.url) ? <a href={s.url} target="_blank" rel="noopener noreferrer nofollow" className="text-gold-400 hover:underline">{s.label}</a> : <span>{s.label}</span>}<span className="mt-1 block text-xs text-muted">Source recorded {formatDate(s.checked_at)} · {s.source_kind.replaceAll("_"," ")}</span></li>)}</ul> : <p className="text-sm text-muted">No supporting sources recorded yet.</p>}
           </section>
+          {promotions.length === 0 && <section><h2 className="section-title mb-3">Current <span className="gold-text">promotions</span></h2><p className="text-sm text-muted">No verified, currently dated offers are listed. Eligibility and availability depend on your jurisdiction.</p></section>}
           {promotions.length > 0 && (
             <section>
               <h2 className="section-title mb-3">Current <span className="gold-text">promotions</span></h2>
               <div className="grid gap-3">
                 {promotions.map((p) => (
                   <div key={p.id} className="card-plain p-4">
-                    <p className="font-semibold">{p.title} {!p.is_verified && <span className="badge-normal ml-2 normal-case">Unverified — as announced by the broker</span>}</p>
+                    <p className="font-semibold">{p.title}</p><p className="mt-1 text-xs text-muted">Source-checked offer · Confirm eligibility and terms for your region.</p>
                     {p.description && <p className="mt-1 text-sm text-white/75">{p.description}</p>}
-                    <p className="mt-2 text-xs text-muted">{p.ends_at ? `Ends ${formatDate(p.ends_at)}` : "No end date announced"} {p.terms_url && <a className="ml-2 text-gold-400" href={p.terms_url} target="_blank" rel="noopener noreferrer nofollow">Terms</a>}</p>
+                    <p className="mt-2 text-xs text-muted">{p.ends_at ? `Ends ${formatDate(p.ends_at)}` : "End date not recorded"} {p.terms_url && <a className="ml-2 text-gold-400" href={p.terms_url} target="_blank" rel="noopener noreferrer nofollow">Terms</a>} {p.source_url && <a className="ml-2 text-gold-400" href={p.source_url} target="_blank" rel="noopener noreferrer nofollow">Official source</a>}</p>
                   </div>
                 ))}
               </div>
