@@ -28,7 +28,7 @@ export default async function SettingsPage() {
   const langs: string[] = prefs?.content_languages ?? ["en"];
   const n = np ?? {};
   return (
-    <div className="max-w-3xl space-y-6">
+    <div className="max-w-3xl space-y-6 fx-member-settings">
       <h2 className="font-display text-2xl font-bold">Account <span className="gold-text">Settings</span></h2>
 
       <section id="preferences" className="card-plain p-6">
