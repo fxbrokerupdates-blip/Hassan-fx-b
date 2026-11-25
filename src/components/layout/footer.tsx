@@ -93,7 +93,7 @@ export function Footer({ config }: { config: SiteConfig }) {
         </div>
         <div className="flex flex-col gap-3 py-5 text-sm text-white/85 md:flex-row md:items-center md:justify-between">
           <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            {[["Privacy Policy", "/privacy"], ["Terms & Conditions", "/terms"], ["Disclaimer", "/disclaimer"], ["Advertise With Us", "/advertise"]].map(([l, h], i) => (
+            {[["Legal & Policies", "/legal"], ["Privacy Policy", "/privacy"], ["Terms & Conditions", "/terms"], ["Disclaimer", "/disclaimer"], ["Advertise With Us", "/advertise"]].map(([l, h], i) => (
               <span key={h} className="flex items-center gap-4">
                 {i > 0 && <span aria-hidden className="text-white/40">|</span>}
                 <Link href={h} className="hover:text-gold-400">{l}</Link>
