@@ -3,6 +3,7 @@ import { cache } from "react";
 import { createSupabasePublic } from "@/lib/supabase/server";
 import { isDevelopmentMode } from "@/lib/env";
 import { SAMPLE_BROKERS } from "@/lib/sample-data";
+import { isCurrentPromotion } from "./broker-promotion-rules";
 import type { Broker } from "@/types/db";
 
 export const listBrokers = cache(async (q?: string): Promise<Broker[]> => {
@@ -30,9 +31,10 @@ export const getBroker = cache(async (slug: string): Promise<BrokerDetail | null
   }
   const { data: broker } = await db.from("brokers").select("*").eq("slug", slug).eq("status", "active").maybeSingle();
   if (!broker) return null;
+  const now = new Date().toISOString();
   const [regs, promos, reviews, sources] = await Promise.all([
     db.from("broker_regulations").select("*").eq("broker_id", broker.id).order("regulator"),
-    db.from("broker_promotions").select("*").eq("broker_id", broker.id).eq("status", "active").order("starts_at", { ascending: false }),
+    db.from("broker_promotions").select("*").eq("broker_id", broker.id).eq("status", "active").eq("is_verified", true).lte("starts_at", now).gt("ends_at", now).order("starts_at", { ascending: false }),
     db.from("broker_reviews").select("id,review_type,rating,title,body,created_at").eq("broker_id", broker.id).eq("status", "approved").order("created_at", { ascending: false }).limit(20),
     db.from("broker_profile_sources").select("label,url,source_kind,checked_at").eq("broker_id", broker.id).order("checked_at", { ascending: false }),
   ]);
@@ -40,7 +42,7 @@ export const getBroker = cache(async (slug: string): Promise<BrokerDetail | null
     broker: broker as Broker,
     sources: (sources.data ?? []) as BrokerDetail["sources"],
     regulations: (regs.data ?? []) as BrokerDetail["regulations"],
-    promotions: (promos.data ?? []) as BrokerDetail["promotions"],
+    promotions: ((promos.data ?? []) as BrokerDetail["promotions"]).filter(p => isCurrentPromotion(p)),
     reviews: (reviews.data ?? []) as BrokerDetail["reviews"],
   };
 });
