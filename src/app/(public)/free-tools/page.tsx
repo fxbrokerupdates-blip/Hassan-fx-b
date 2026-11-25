@@ -30,6 +30,7 @@ export default async function FreeToolsPage() {
             <p className="text-sm text-navy-800">{t.text}</p>
           </Link>
         ))}
+        <Link href="/trading-calculators" className="card-navy flex flex-col items-start gap-3 p-6"><h2 className="font-display text-xl font-bold">Trading Calculators</h2><p className="text-sm text-white/80">Position size, pip value, margin and reward-to-risk. No login required.</p></Link>
         {flags.ai_studio && (
           <Link href="/dashboard/studio" className="card-navy flex flex-col items-start gap-3 p-6">
             <Sparkles className="size-16 text-gold-400" />
