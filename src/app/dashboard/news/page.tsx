@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { NewsCenter } from "@/components/news/news-center";
 import { getSiteConfig } from "@/lib/data/site";
 import { listBrokers } from "@/lib/data/brokers";
@@ -14,6 +15,7 @@ export default async function DashboardNews({ searchParams }: { searchParams: Pr
   return (
     <div className="-mx-4 lg:-mx-8">
       <h2 className="px-4 font-display text-2xl font-bold lg:px-8">{title}</h2>
+      <nav className="fx-member-news-tabs" aria-label="News type">{[["all","All News"],["broker","Broker Updates"],["trading","Trading News"]].map(([key,label])=><Link key={key} href={"/dashboard/news?type="+key} aria-current={type===key?"page":undefined}>{label}</Link>)}</nav>
       <NewsCenter basePath="/dashboard/news" sp={sp} base={{ type }}
         filters={{
           categories: type !== "trading" ? config.categories.filter((c) => c.news_type !== "trading").map((c) => ({ value: c.slug, label: c.name })) : undefined,
