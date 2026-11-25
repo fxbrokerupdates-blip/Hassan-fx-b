@@ -63,11 +63,13 @@ export function Header({ nav, logoUrl, siteName }: { nav: NavItem[]; logoUrl: st
   }
 
   return (
-    <header ref={headerRef} className="sticky top-0 z-50 border-b border-white/10 bg-navy-900/95 backdrop-blur supports-[backdrop-filter]:bg-navy-900/85">
-      <div className="container-site flex h-[62px] items-center gap-4">
+    <header ref={headerRef} className={cn("sticky top-0 z-50 border-b border-white/10 bg-navy-900/95 backdrop-blur supports-[backdrop-filter]:bg-navy-900/85", pathname === "/" && "fx-pro-header")}>
+      {pathname === "/" && <div className="fx-pro-utility"><span>Global Forex &amp; Broker Intelligence</span><div><Link href="/news">Latest news</Link><Link href="/dashboard/trader">Watchlist</Link><Link href="/broker-warnings">Regulatory alerts</Link></div></div>}
+      <div className="container-site flex h-[62px] items-center gap-4 fx-pro-header-main">
         <Logo src={logoUrl} name={siteName} priority />
 
-        <nav aria-label="Main" className="ml-auto hidden items-center gap-1 lg:flex">
+        {pathname === "/" && <form onSubmit={onSearch} role="search" className="fx-pro-header-search"><Search size={18}/><input name="q" aria-label="Search the website" placeholder="Search brokers, news, charts, tools…" maxLength={120}/><button type="submit">Search</button></form>}
+        <nav aria-label="Main" className="ml-auto hidden items-center gap-1 lg:flex fx-pro-original-nav">
           {top.map((item) => {
             const kids = children(item.id);
             const active = isActive(item.href);
@@ -158,6 +160,7 @@ export function Header({ nav, logoUrl, siteName }: { nav: NavItem[]; logoUrl: st
         </div>
       </div>
 
+      {pathname === "/" && <nav className="fx-pro-nav" aria-label="Homepage navigation">{[{href:"/",label:"Home"},{href:"/brokers",label:"Brokers"},{href:"/market-intelligence",label:"Markets"},{href:"/news",label:"News"},{href:"/economic-calendar",label:"Calendar"},{href:"/free-tools",label:"Tools"},{href:"/ib-programs",label:"IB Center"},{href:"/community",label:"Community"}].map(n=><Link key={n.href} href={n.href} className={n.href==="/"?"fx-pro-nav-active":""}>{n.label}</Link>)}<Link className="fx-pro-nav-ai" href="/dashboard/studio">AI Studio</Link></nav>}
       {searchOpen && (
         <div className="border-t border-white/10 bg-navy-900">
           <form onSubmit={onSearch} role="search" className="container-site flex gap-2 py-3">
