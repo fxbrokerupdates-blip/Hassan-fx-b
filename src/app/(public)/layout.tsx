@@ -16,8 +16,8 @@ export default async function PublicLayout({ children }: { children: React.React
           Development mode — Supabase is not configured. Items marked SAMPLE are placeholders, not real news.
         </div>
       )}
-      <div className="fx-public-shell"><Header nav={config.nav} logoUrl={g.logo_url} siteName={g.name} />
-      <main id="main">{maintenance.enabled ? <MaintenanceNotice message={maintenance.message} /> : children}</main>
+      <div className="fx-public-shell"><Header premium nav={config.nav} logoUrl={g.logo_url} siteName={g.name} />
+      <main id="main" className="fx-public-main">{maintenance.enabled ? <MaintenanceNotice message={maintenance.message} /> : children}</main>
       <Footer config={config} />
       {!maintenance.enabled && <MobileNav/>}</div>
     </>
