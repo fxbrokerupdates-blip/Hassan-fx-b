@@ -1,0 +1,6 @@
+import Link from "next/link";
+import {Calculator,BarChart3,CalendarDays,Image,Video,ArrowRight,Shield} from "lucide-react";
+import {TradingCalculator} from "@/components/trading/trading-calculator";
+import {memberFeatureEnabled} from "@/lib/features";
+export const metadata={title:"Trading Tools"};
+export default async function Page(){const [prompts,scripts]=await Promise.all([memberFeatureEnabled("banner_prompts"),memberFeatureEnabled("video_scripts")]);return <div className="space-y-4"><section className="fx-member-hero fx-market-hero"><div><p className="fx-eyebrow">TRADER RESOURCES</p><h1>Trading <em>Tools</em></h1><p>Calculate risk, research markets and create content.</p></div></section><div className="fx-member-toolgrid fx-tools-page-grid">{[{label:"Market Watch",href:"/dashboard/market-watch",Icon:BarChart3},{label:"Calendar",href:"/dashboard/calendar",Icon:CalendarDays},{label:"Broker License Checker",href:"/broker-regulation",Icon:Shield},...(prompts?[{label:"Banner Prompts",href:"/dashboard/prompts",Icon:Image}]:[]),...(scripts?[{label:"Video Scripts",href:"/dashboard/scripts",Icon:Video}]:[])].map(({label,href,Icon})=><Link key={href} href={href}><Icon size={20}/>{label}<ArrowRight size={13}/></Link>)}</div><section><h2 className="section-title mb-3">Risk & Position Size Calculator</h2><TradingCalculator/></section></div>}
