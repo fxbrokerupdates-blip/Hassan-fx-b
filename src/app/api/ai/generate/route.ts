@@ -35,7 +35,7 @@ export async function POST(req: Request) {
   if (!sameOrigin(req)) return error("Forbidden", 403);
   const viewer = await getViewer();
   if (!viewer) return error("Please log in to use the AI Creator Studio.", 401);
-  if (viewer.profile?.status !== "active") return error("Your account is not active.", 403);
+  if (viewer.profile?.status !== "active" || !viewer.profile.email_verified_at) return error("An active email-verified account is required.", 403);
   const { data, error: err } = await parseBody(req, Body, 20_000);
   if (!data) return error(err ?? "Invalid input");
 
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
   await recordServerEvent(viewer.id, "ai_generation_requested", { feature: "ai_studio", content_type: data.source_type === "article" ? "article" : undefined,
     content_id: data.source_type === "article" ? data.source_id : undefined, metadata: { type: data.options.content_type } });
   try {
-    const source = await resolveSource(data.source_type, data.source_id, data.source_text, viewer.isStaff);
+    const source = await resolveSource(data.source_type, data.source_id, data.source_text, isAdminStudio && viewer.isStaff);
     const result = await generateContent({ userId: viewer.id, isAdminStudio, options: data.options, source, sourceId: data.source_id });
     await recordServerEvent(viewer.id, "ai_generation_completed", { feature: "ai_studio", content_type: "ai_generation", content_id: result.id, metadata: { type: data.options.content_type } });
     return json(result);
