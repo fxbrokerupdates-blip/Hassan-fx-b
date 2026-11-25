@@ -6,7 +6,7 @@ export function PageHeader({ title, gold, description, crumbs }: {
   title: string; gold?: string; description?: string; crumbs: { name: string; path: string }[];
 }) {
   return (
-    <section className="border-b border-white/10 bg-[radial-gradient(ellipse_at_top_left,#0d2c52,var(--deep-navy)_60%)]">
+    <section className="fx-page-heading border-b border-white/10 bg-[radial-gradient(ellipse_at_top_left,#0d2c52,var(--deep-navy)_60%)]">
       <JsonLd data={breadcrumbJsonLd(crumbs)} />
       <div className="container-site py-4 sm:py-5">
         <nav aria-label="Breadcrumb" className="mb-2 flex flex-wrap items-center gap-1 text-xs text-muted">
