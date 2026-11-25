@@ -152,3 +152,20 @@ body {
 }
 
 :focus-visible { outline: 2px solid var(--bright-gold); outline-offset: 2px; }
+
+/* Compact public portal: preserve admin-controlled brand tokens. */
+.fx-public-shell .container-site{max-width:1440px}
+.fx-public-shell .card-plain{border-color:rgb(255 255 255 / .11);background:color-mix(in srgb,var(--secondary-navy) 70%,var(--dark-navy));box-shadow:0 5px 18px rgb(0 0 0 / .10)}
+.fx-section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px}
+.fx-section-heading h2{font-family:var(--font-display);font-size:17px;font-weight:700}
+.fx-section-heading a{font-size:13px;color:var(--bright-gold)}
+.fx-market-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.fx-market-card{display:flex;align-items:center;gap:10px;min-width:0;min-height:65px;border:1px solid rgb(255 255 255 / .11);border-radius:11px;padding:10px 12px;background:linear-gradient(145deg,var(--secondary-navy),var(--deep-navy));transition:border-color .15s,background .15s}
+.fx-market-card:hover{border-color:var(--primary-gold)}
+.fx-market-card strong{display:block;font-size:15px;line-height:1.2;font-weight:600}
+.fx-market-card small{display:block;font-size:12px;color:var(--muted-text);line-height:1.3;margin-top:4px}
+.fx-tool-index{font-size:11px;font-variant-numeric:tabular-nums;color:var(--bright-gold);padding:7px;border-radius:7px;background:rgb(255 255 255 / .06)}
+.fx-arrow{color:var(--primary-gold);font-size:22px;margin-left:auto}
+.fx-mobile-nav{display:none}
+@media(max-width:1023px){.fx-market-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.fx-public-shell{padding-bottom:calc(63px + env(safe-area-inset-bottom))}.fx-mobile-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;inset:auto 0 0;z-index:45;padding:5px 4px calc(6px + env(safe-area-inset-bottom));background:var(--dark-navy);border-top:1px solid rgb(255 255 255 / .12);box-shadow:0 -4px 24px rgb(0 0 0 / .18)}.fx-mobile-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:48px;font-size:11px;color:var(--muted-text)}.fx-mobile-nav a[aria-current=page]{color:var(--bright-gold)}}
+@media(max-width:480px){.fx-public-shell .container-site{padding-inline:12px}.fx-market-card{padding:9px;gap:7px;min-height:64px}.fx-market-card strong{font-size:14px}.fx-tool-index{display:none}.fx-market-card small{font-size:11px}.fx-public-shell .section-title{font-size:18px}}
