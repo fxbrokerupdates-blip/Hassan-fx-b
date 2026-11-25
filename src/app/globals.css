@@ -953,3 +953,40 @@ a.fx-partner-card:hover{border-color:#f5c542;background-color:#253b4b}
 .fx-public-terminal-shell .fx-pro-header-search{flex:1;max-width:590px;min-width:0}
 .fx-public-terminal-shell .fx-pro-header-search:focus-within{border-color:#f6cb64;box-shadow:0 0 0 2px #f6cb6422}
 }
+
+/* Shared desktop pages: size to the content area remaining beside the sidebar. */
+@media(min-width:1024px){
+.fx-public-terminal-shell .fx-page-heading .container-site{padding-block:20px}
+.fx-public-terminal-shell .fx-page-heading h1{font-size:clamp(27px,2.35vw,36px)}
+.fx-public-terminal-shell .fx-page-heading p{font-size:14px;line-height:1.55}
+.fx-public-terminal-shell .fx-research-nav a{font-size:13px;min-height:38px}
+.fx-public-terminal-shell .fx-research-stat>span,.fx-public-terminal-shell .fx-research-stat>small{font-size:12px;line-height:1.4}
+.fx-public-terminal-shell .fx-research-info>div{font-size:13px;line-height:1.6}
+.fx-public-terminal-shell .fx-public-main .table-clean th{font-size:12px}
+.fx-public-terminal-shell .fx-directory-columns,.fx-public-terminal-shell .fx-directory .fx-directory-row{grid-template-columns:minmax(0,1.55fr) minmax(0,.9fr) minmax(0,.8fr) minmax(0,1.15fr);gap:12px}
+.fx-public-terminal-shell .fx-directory-name,.fx-public-terminal-shell .fx-directory-actions{min-width:0}
+.fx-public-terminal-shell .fx-directory-name a{overflow-wrap:anywhere}
+.fx-public-terminal-shell .fx-directory-actions{flex-wrap:wrap;justify-content:flex-start;gap:6px}
+.fx-public-terminal-shell .fx-directory-actions a{white-space:normal}
+.fx-public-terminal-shell .fx-news-standard .fx-news-copy{overflow-wrap:anywhere}
+.fx-public-terminal-shell .fx-news-main .fx-news-standard h3{line-height:1.4}
+.fx-public-terminal-shell .fx-search-page .fx-news-feed{grid-template-columns:repeat(2,minmax(0,1fr))}
+.fx-public-terminal-shell .fx-tool-library>a{min-width:0;min-height:150px}
+.fx-public-terminal-shell .fx-tool-library>a h2{padding-right:18px}
+.fx-public-terminal-shell .fx-ib-program-grid>article,.fx-public-terminal-shell .fx-calculator-board>*,.fx-public-terminal-shell .fx-macro-board>section{min-width:0}
+.fx-public-terminal-shell .fx-research-stat,.fx-public-terminal-shell .fx-public-main .card-plain{border-color:#3c5367}
+}
+@media(min-width:1024px) and (max-width:1360px){
+.fx-public-terminal-shell .fx-news-workspace{grid-template-columns:minmax(0,1fr)}
+.fx-public-terminal-shell .fx-news-rail{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0}
+.fx-public-terminal-shell .fx-search-page .fx-news-feed{grid-template-columns:minmax(0,1fr)}
+.fx-public-terminal-shell .fx-broker-profile{grid-template-columns:minmax(0,1fr) minmax(220px,.55fr);gap:12px}
+.fx-public-terminal-shell .fx-ib-program-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.fx-public-terminal-shell .fx-calculator-results{grid-template-columns:repeat(2,minmax(0,1fr))}
+.fx-public-terminal-shell .fx-quotes-board,.fx-public-terminal-shell .fx-community-board{grid-template-columns:minmax(0,1fr)}
+.fx-public-terminal-shell .fx-quotes-board .fx-research-aside,.fx-public-terminal-shell .fx-community-board .fx-research-aside{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(min-width:1024px) and (max-width:1150px){
+.fx-public-terminal-shell .fx-macro-board,.fx-public-terminal-shell .fx-broker-profile,.fx-public-terminal-shell .fx-calculator-board{grid-template-columns:minmax(0,1fr)}
+.fx-public-terminal-shell .fx-profile-aside,.fx-public-terminal-shell .fx-article-aside{position:static}
+}
