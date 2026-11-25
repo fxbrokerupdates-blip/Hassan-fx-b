@@ -15,7 +15,7 @@ export function Footer({ config }: { config: SiteConfig }) {
   const g = config.settings["site.general"];
   const year = new Date().getFullYear();
   return (
-    <footer className="relative mt-10 overflow-hidden bg-navy-950">
+    <footer className="fx-public-footer relative mt-10 overflow-hidden bg-navy-950">
       {/* gold sweep along the top edge, as in the reference */}
       <div aria-hidden className="h-[6px] w-full bg-[linear-gradient(90deg,transparent_0%,var(--primary-gold)_18%,var(--bright-gold)_50%,var(--primary-gold)_82%,transparent_100%)]" />
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(ellipse_at_top,rgb(245_197_66/0.12),transparent_60%)]" />
