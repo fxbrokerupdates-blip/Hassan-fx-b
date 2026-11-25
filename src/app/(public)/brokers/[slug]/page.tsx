@@ -7,6 +7,8 @@ import { getBroker } from "@/lib/data/brokers";
 import { listNews } from "@/lib/data/news";
 import { PageHeader } from "@/components/news/page-header";
 import { NewsCard } from "@/components/news/news-card";
+import { BrokerReviewForm } from "@/components/brokers/review-form";
+import { getSiteConfig } from "@/lib/data/site";
 import { FollowButton } from "@/components/brokers/follow-button";
 import { SaveButton } from "@/components/news/save-button";
 import { ReportButton } from "@/components/news/report-button";
@@ -42,7 +44,7 @@ export default async function BrokerProfilePage({ params }: Props) {
   const d = await getBroker(slug);
   if (!d) notFound();
   const { broker: b, regulations, promotions, reviews, sources } = d;
-  const news = await listNews({ broker: slug, pageSize: 6 });
+  const [news, config] = await Promise.all([listNews({ broker: slug, pageSize: 6 }),getSiteConfig()]);
   const editorial = reviews.filter((r) => r.review_type === "editorial");
   const userReviews = reviews.filter((r) => r.review_type === "user");
   const sponsored = reviews.filter((r) => r.review_type === "sponsored");
@@ -171,6 +173,7 @@ export default async function BrokerProfilePage({ params }: Props) {
               </div>
             )}
           </section>
+          {!b.is_sample && config.flags.user_reviews && <BrokerReviewForm brokerId={b.id}/>}
           <ReportButton contentType="broker" contentId={b.id} />
         </div>
         <aside>
