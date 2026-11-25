@@ -23,7 +23,7 @@ export default async function NotificationsPage({ searchParams }: { searchParams
     .eq("user_id", viewer.id).order("created_at", { ascending: false }).range((page - 1) * 30, page * 30 - 1);
   const rows = (data ?? []) as unknown as { id: string; read_at: string | null; created_at: string; notifications: { title: string; body: string | null; link: string | null; category: string } | null }[];
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 fx-member-notifications">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="font-display text-2xl font-bold">Notification <span className="gold-text">Center</span></h2>
         <div className="flex gap-2">
