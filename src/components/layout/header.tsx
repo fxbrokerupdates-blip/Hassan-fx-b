@@ -14,7 +14,7 @@ export interface HeaderViewer {
   unread: number;
 }
 
-export function Header({ nav, logoUrl, siteName }: { nav: NavItem[]; logoUrl: string; siteName: string }) {
+export function Header({ nav, logoUrl, siteName, premium = false }: { nav: NavItem[]; logoUrl: string; siteName: string; premium?: boolean }) {
   const [viewer, setViewer] = useState<HeaderViewer | null>(null);
   const pathname = usePathname();
   const router = useRouter();
@@ -33,7 +33,7 @@ export function Header({ nav, logoUrl, siteName }: { nav: NavItem[]; logoUrl: st
     let alive = true;
     fetch("/api/me", { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : null))
-      .then((d) => { if (alive && d?.user) setViewer(d.user as HeaderViewer); })
+      .then((d) => { if (alive) setViewer(d?.user ? d.user as HeaderViewer : null); })
       .catch(() => undefined);
     return () => { alive = false; };
   }, [pathname]);
@@ -63,12 +63,12 @@ export function Header({ nav, logoUrl, siteName }: { nav: NavItem[]; logoUrl: st
   }
 
   return (
-    <header ref={headerRef} className={cn("sticky top-0 z-50 border-b border-white/10 bg-navy-900/95 backdrop-blur supports-[backdrop-filter]:bg-navy-900/85", pathname === "/" && "fx-pro-header")}>
-      {pathname === "/" && <div className="fx-pro-utility"><span>Global Forex &amp; Broker Intelligence</span><div><Link href="/news">Latest news</Link><Link href="/dashboard/trader">Watchlist</Link><Link href="/broker-warnings">Regulatory alerts</Link></div></div>}
+    <header ref={headerRef} className={cn("sticky top-0 z-50 border-b border-white/10 bg-navy-900/95 backdrop-blur supports-[backdrop-filter]:bg-navy-900/85", premium && "fx-pro-header")}>
+      {premium && <div className="fx-pro-utility"><span>Global Forex &amp; Broker Intelligence</span><div><Link href="/news">Latest news</Link><Link href="/dashboard/trader">Watchlist</Link><Link href="/broker-warnings">Regulatory alerts</Link></div></div>}
       <div className="container-site flex h-[62px] items-center gap-4 fx-pro-header-main">
         <Logo src={logoUrl} name={siteName} priority />
 
-        {pathname === "/" && <form onSubmit={onSearch} role="search" className="fx-pro-header-search"><Search size={18}/><input name="q" aria-label="Search the website" placeholder="Search brokers, news, charts, tools…" maxLength={120}/><button type="submit">Search</button></form>}
+        {premium && <form onSubmit={onSearch} role="search" className="fx-pro-header-search"><Search size={18}/><input name="q" aria-label="Search the website" placeholder="Search brokers, news, charts, tools…" maxLength={120}/><button type="submit">Search</button></form>}
         <nav aria-label="Main" className="ml-auto hidden items-center gap-1 lg:flex fx-pro-original-nav">
           {top.map((item) => {
             const kids = children(item.id);
@@ -160,7 +160,16 @@ export function Header({ nav, logoUrl, siteName }: { nav: NavItem[]; logoUrl: st
         </div>
       </div>
 
-      {pathname === "/" && <nav className="fx-pro-nav" aria-label="Homepage navigation">{[{href:"/",label:"Home"},{href:"/brokers",label:"Brokers"},{href:"/market-intelligence",label:"Markets"},{href:"/news",label:"News"},{href:"/economic-calendar",label:"Calendar"},{href:"/free-tools",label:"Tools"},{href:"/ib-programs",label:"IB Center"},{href:"/community",label:"Community"}].map(n=><Link key={n.href} href={n.href} className={n.href==="/"?"fx-pro-nav-active":""}>{n.label}</Link>)}<Link className="fx-pro-nav-ai" href="/dashboard/studio">AI Studio</Link></nav>}
+      {premium && <nav className="fx-pro-nav" aria-label="Main desktop navigation">{[
+ {label:"Home",href:"/",links:[]},
+ {label:"Brokers",href:"/brokers",links:[["Directory & comparison","/brokers"],["Broker updates","/broker-updates"],["Regulatory warnings","/broker-warnings"]]},
+ {label:"Markets",href:"/market-intelligence",links:[["Market overview","/market-intelligence"],["Prices & charts","/market-quotes"],["Currency strength","/currency-strength"],["Sentiment & COT","/market-sentiment"]]},
+ {label:"News",href:"/news",links:[["All news","/news"],["Trading updates","/trading-updates"],["Broker updates","/broker-updates"]]},
+ {label:"Calendar",href:"/economic-calendar",links:[]},
+ {label:"Tools",href:"/free-tools",links:[["All tools","/free-tools"],["Trading calculators","/trading-calculators"],["Banner prompts","/free-tools/banner-prompts"],["Video scripts","/free-tools/video-scripts"]]},
+ {label:"IB Center",href:"/ib-programs",links:[]},
+ {label:"Community",href:"/community",links:[]}
+ ].map(n=>{const active=isActive(n.href)||n.links.some(([,href])=>isActive(href));return <div className="fx-pro-nav-group" key={n.href}><Link href={n.href} onClick={navigate} aria-current={pathname===n.href?"page":undefined} className={active?"fx-pro-nav-active":""}>{n.label}</Link>{n.links.length>0&&<><button type="button" className="fx-pro-nav-toggle" aria-label={n.label+" submenu"} aria-expanded={menu===n.href} onClick={()=>setMenu(menu===n.href?null:n.href)}><ChevronDown size={13}/></button>{menu===n.href&&<div className="fx-pro-dropdown">{n.links.map(([label,href])=><Link key={href} href={href} onClick={navigate}>{label}</Link>)}</div>}</>}</div>})}<Link className="fx-pro-nav-ai" href="/dashboard/studio">AI Studio</Link><details className="fx-pro-more"><summary>More</summary><div className="fx-pro-dropdown">{top.map(n=><div key={n.id}><Link href={n.href} onClick={navigate}>{n.label}</Link>{children(n.id).map(k=><Link className="fx-pro-sub" key={k.id} href={k.href} onClick={navigate}>{k.label}</Link>)}</div>)}</div></details></nav>}
       {searchOpen && (
         <div className="border-t border-white/10 bg-navy-900">
           <form onSubmit={onSearch} role="search" className="container-site flex gap-2 py-3">
