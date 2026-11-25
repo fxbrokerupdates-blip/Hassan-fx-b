@@ -8,15 +8,18 @@ export function ContactForm({ kind = "contact" }: { kind?: "contact" | "advertis
     const form = e.currentTarget;
     const body = Object.fromEntries(new FormData(form).entries());
     setState({ busy: true });
+    try {
     const res = await fetch(kind === "advertise" ? "/api/advertise" : "/api/contact", {
       method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
     });
     const j = await res.json().catch(() => ({}));
     setState({ ok: res.ok, msg: res.ok ? "Thank you — we received your message and will reply by email." : j.error ?? "Could not send message." });
     if (res.ok) form.reset();
+    } catch { setState({ok:false,msg:"Unable to connect. Please try again."}); }
   }
   return (
-    <form onSubmit={onSubmit} className="card-plain grid gap-4 p-6 sm:grid-cols-2">
+    <form onSubmit={onSubmit} className="fx-support-form card-plain grid gap-4 p-6 sm:grid-cols-2">
+      <h2 className="fx-desktop-extra section-title sm:col-span-2">{kind==="advertise"?"Campaign enquiry":"Send us a message"}</h2>
       {kind === "advertise" ? (
         <>
           <div><label className="label" htmlFor="company">Company</label><input id="company" name="company" required maxLength={160} className="input" /></div>
