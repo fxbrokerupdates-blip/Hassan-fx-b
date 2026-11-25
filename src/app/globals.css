@@ -938,3 +938,18 @@ a.fx-partner-card:hover{border-color:#f5c542;background-color:#253b4b}
 .fx-reference-home .fx-pro-ticker-label{grid-column:auto}
 .fx-reference-home .fx-partner-copy strong{font-size:13px}
 }
+
+/* Desktop-only personal workspace and navigation polish. */
+@media(min-width:1024px){
+.fx-member-legacy{display:block;margin-top:14px}
+.fx-member-legacy>:not(.fx-member-personal-panels){display:none}
+.fx-member-legacy>.fx-member-personal-panels{margin-block:0;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.fx-member-personal-panels>section{min-width:0;border:1px solid #476278;border-radius:11px;background:linear-gradient(145deg,#10263a,#061624);padding:14px}
+.fx-member-personal-panels h2{font-size:16px}
+.fx-member-creators .fx-member-creator-art{display:grid;place-items:center;flex:none;width:90px;margin:0}
+.fx-member-creator-art img{width:90px;height:64px;object-fit:contain}
+.fx-reference-home .fx-pro-calendar-head,.fx-reference-home .fx-pro-calendar-row{grid-template-columns:62px minmax(0,1fr) 48px}
+.fx-public-terminal-shell .fx-pro-header-main button[aria-label="Search"]{display:none}
+.fx-public-terminal-shell .fx-pro-header-search{flex:1;max-width:590px;min-width:0}
+.fx-public-terminal-shell .fx-pro-header-search:focus-within{border-color:#f6cb64;box-shadow:0 0 0 2px #f6cb6422}
+}
