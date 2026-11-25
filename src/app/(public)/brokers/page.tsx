@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Building2 } from "lucide-react";
+import {ResearchStats} from "@/components/layout/research-widgets";
 import { PageHeader } from "@/components/news/page-header";
 import { listBrokers, listVerifiedLicenseRecords } from "@/lib/data/brokers";
 import { pageMetadata } from "@/lib/seo";
@@ -41,6 +42,7 @@ export default async function BrokersPage({ searchParams }: { searchParams: Prom
           <strong className="text-gold-400">{all.length} broker profiles</strong> · {all.filter(b=>!b.is_sample && records(b.id).length>0).length} profiles with checked entity license records.
           <p className="mt-1">Products, costs and eligibility depend on the legal entity and country. Confirm licenses directly with the regulator before opening an account.</p>
         </div>
+        <ResearchStats items={[{label:"Broker profiles",value:all.filter(b=>!b.is_sample).length},{label:"Recorded license checks",value:all.filter(b=>!b.is_sample&&records(b.id).length>0).length},{label:"Matched profiles",value:brokers.length},{label:"Platforms listed",value:platforms.length}]}/>
         <form className="mb-6 grid gap-2 sm:grid-cols-[2fr_1fr_1fr_1fr_auto] fx-directory-filters" role="search">
           <input name="q" defaultValue={q} placeholder="Search name or platform" className="input" aria-label="Search brokers" />
           <select name="platform" defaultValue={platform} className="input" aria-label="Platform"><option value="">All platforms</option>{platforms.map(p=><option key={p}>{p}</option>)}</select>
@@ -54,6 +56,7 @@ export default async function BrokersPage({ searchParams }: { searchParams: Prom
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2"><p className="text-sm text-muted">{brokers.length} results · Select up to 3 for comparison</p><button className="btn-gold px-5">Compare selected</button></div>
           {brokers.length === 0 ? <p className="rounded-xl border border-dashed border-white/15 p-12 text-center text-white/70">No matching brokers. <Link href="/brokers" className="text-gold-400">Reset filters</Link></p> :
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 fx-directory-list">
+          <div className="fx-directory-columns" aria-hidden="true"><span>Broker / recorded status</span><span>Trading platforms</span><span>Minimum deposit</span><span>Research actions</span></div>
           {brokers.map(b=><article key={b.id} className="card-plain p-4 fx-directory-row">
             <div className="flex items-start gap-3 fx-directory-name"><span className="grid size-12 shrink-0 place-items-center rounded-lg bg-white"><Building2 className="size-6 text-navy-800"/></span><div className="min-w-0 flex-1"><Link href={`/brokers/${b.slug}`} className="font-condensed text-xl font-semibold hover:text-gold-400">{b.name}</Link><p className="text-xs text-muted">{b.is_sample ? "Sample profile" : records(b.id).length ? `${records(b.id).length} entity license record(s) checked` : "License verification pending"}</p><SampleBadge show={b.is_sample}/>{b.is_sponsored && <span className="badge-warm">Sponsored</span>}</div></div>
             <p className="mt-3 text-sm text-white/75 fx-directory-platform"><span>Platforms</span> {val(b.platforms)}</p><p className="mt-1 text-sm text-white/75 fx-directory-deposit"><span>Minimum deposit</span> {val(b.min_deposit)}</p>
