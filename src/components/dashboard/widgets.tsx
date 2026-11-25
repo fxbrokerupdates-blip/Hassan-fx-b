@@ -6,7 +6,7 @@ export function Panel({ title, gold, href, hrefLabel = "View all", children, cla
   title: string; gold?: string; href?: string; hrefLabel?: string; children: React.ReactNode; className?: string;
 }) {
   return (
-    <section className={cn("card-plain p-5", className)}>
+    <section className={cn("card-plain p-5 fx-member-widget", className)}>
       <div className="mb-3 flex items-center justify-between gap-3">
         <h2 className="font-display text-lg font-bold">{title} {gold && <span className="gold-text">{gold}</span>}</h2>
         {href && <Link href={href} className="flex items-center gap-1 text-sm text-white/70 hover:text-gold-400">{hrefLabel}<ArrowRight className="size-4" /></Link>}
