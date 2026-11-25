@@ -18,8 +18,8 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     <>
       <PageHeader title="Search" gold="Results" description={q ? `Results for “${q}”` : "Search broker news, market updates and brokers."}
         crumbs={[{ name: "Home", path: "/" }, { name: "Search", path: "/search" }]} />
-      <div className="container-site py-8">
-        <form action="/search" className="flex gap-2" role="search">
+      <div className="container-site py-8 fx-search-page">
+        <form action="/search" className="flex gap-2 fx-research-filter" role="search">
           <input name="q" defaultValue={q} className="input" placeholder="Search…" aria-label="Search" maxLength={120} />
           <button className="btn-gold px-6">Search</button>
         </form>
@@ -38,7 +38,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
             <section className="mt-8">
               <h2 className="section-title mb-3">News ({news?.total ?? 0})</h2>
               {news && news.items.length > 0 ? (
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{news.items.map((a) => <NewsCard key={a.id} a={a} />)}</div>
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 fx-news-feed">{news.items.map((a) => <NewsCard key={a.id} a={a} />)}</div>
               ) : <p className="text-white/70">No news found.</p>}
               {news && <Pagination page={news.page} total={news.total} pageSize={news.pageSize} basePath="/search" params={flatParams(sp)} />}
             </section>
