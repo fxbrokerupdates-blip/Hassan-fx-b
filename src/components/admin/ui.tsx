@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 export function AdminHeader({ title, gold, description, actions }: { title: string; gold?: string; description?: string; actions?: React.ReactNode }) {
   return (
-    <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+    <div className="fx-admin-heading mb-6 flex flex-wrap items-end justify-between gap-4">
       <div>
         <h1 className="font-display text-2xl font-bold sm:text-[28px]">{title} {gold && <span className="gold-text">{gold}</span>}</h1>
         {description && <p className="mt-1 max-w-3xl text-sm text-white/70">{description}</p>}
@@ -40,7 +40,7 @@ export function Tabs({ tabs, current }: { tabs: { href: string; label: string; k
 
 export function KPI({ label, value, sub, tone }: { label: string; value: React.ReactNode; sub?: React.ReactNode; tone?: "gold" | "green" | "red" }) {
   return (
-    <div className="card-plain p-4">
+    <div className="card-plain p-4 fx-admin-kpi">
       <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">{label}</p>
       <p className={cn("mt-1.5 font-display text-2xl font-bold", tone === "gold" && "gold-text", tone === "green" && "text-emerald-400", tone === "red" && "text-red-400")}>{value}</p>
       {sub && <p className="mt-1 text-xs text-muted">{sub}</p>}
@@ -50,7 +50,7 @@ export function KPI({ label, value, sub, tone }: { label: string; value: React.R
 
 export function Card({ title, children, className, actions }: { title?: React.ReactNode; children: React.ReactNode; className?: string; actions?: React.ReactNode }) {
   return (
-    <section className={cn("card-plain p-5", className)}>
+    <section className={cn("card-plain p-5 fx-admin-card", className)}>
       {(title || actions) && <div className="mb-3 flex items-center justify-between gap-3"><h2 className="font-display text-base font-bold">{title}</h2>{actions}</div>}
       {children}
     </section>
