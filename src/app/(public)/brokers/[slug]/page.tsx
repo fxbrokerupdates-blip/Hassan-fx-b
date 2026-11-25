@@ -1,3 +1,5 @@
+import Link from "next/link";
+import {ResearchStats} from "@/components/layout/research-widgets";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -77,11 +79,12 @@ export default async function BrokerProfilePage({ params }: Props) {
               )}
             </div>
           </section>
+          <ResearchStats items={[{label:"Checked entity records",value:regulations.filter(r=>r.status==="verified"&&r.verified_at).length},{label:"Source references",value:sources.length},{label:"Current listed offers",value:promotions.length}]}/>
           {b.affiliate_disclosure && (
             <p className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-100"><strong>Disclosure:</strong> {b.affiliate_disclosure}</p>
           )}
 
-          <section>
+          <section id="broker-details">
             <h2 className="section-title mb-3">Key <span className="gold-text">information</span></h2>
             <dl className="card-plain px-5 py-2">
               <Row label="Founded" value={b.founded_year} />
@@ -97,7 +100,7 @@ export default async function BrokerProfilePage({ params }: Props) {
             </dl>
           </section>
 
-          <section>
+          <section id="broker-regulation">
             <h2 className="section-title mb-3">Regulation <span className="gold-text">& licenses</span></h2>
             {regulations.length === 0 ? (
               <p className="flex items-center gap-2 text-sm text-white/70"><ShieldAlert className="size-4 text-amber-400" />No license information with a verification source has been added yet.</p>
@@ -120,12 +123,12 @@ export default async function BrokerProfilePage({ params }: Props) {
             <p className="mt-2 text-xs text-muted">Always confirm license status directly on the regulator’s official register.</p>
           </section>
 
-          <section>
+          <section id="broker-pricing">
             <h2 className="section-title mb-3">EUR/USD <span className="gold-text">trading costs</span></h2>
             {!b.is_sample && pricingFor(b.slug).length > 0 ? <div className="card-plain overflow-x-auto"><table className="table-clean"><thead><tr><th>Entity &amp; account</th><th>Min / avg spread</th><th>USD commission / side</th><th>Retail leverage</th><th>Estimated avg round turn</th></tr></thead><tbody>{pricingFor(b.slug).map(p=><tr key={p.account}><td>{p.entity}<br/>{p.account} · {p.platform}<br/><span className="text-xs text-muted">USD account · {p.checkedOn}</span></td><td>{p.minPips ?? "—"} / {p.avgPips ?? "—"} pips</td><td>{p.commissionUsdPerLotSide === null ? "—" : "$"+p.commissionUsdPerLotSide}</td><td>{p.retailLeverage ?? "Not recorded"}</td><td>{roundTurnUsd(p,"average") === null ? "—" : "$"+roundTurnUsd(p,"average")?.toFixed(2)}</td></tr>)}</tbody></table></div> : <p className="text-sm text-muted">Entity-specific pricing not yet recorded.</p>}
             <p className="mt-2 text-xs text-muted">Not live quotes. Cost estimates are for one standard lot, excluding financing, slippage and other charges. Refer to the source links below and confirm current terms.</p>
           </section>
-          <section>
+          <section id="broker-evidence">
             <h2 className="section-title mb-3">Evidence <span className="gold-text">&amp; sources</span></h2>
             <p className="mb-3 text-xs text-muted">Broker disclosures are not independent regulatory verification. Availability and terms vary by legal entity.</p>
             {sources.length ? <ul className="card-plain divide-y divide-white/10 px-4">{sources.map((s,i) => <li key={i} className="py-3 text-sm">{/^https:\/\//.test(s.url) ? <a href={s.url} target="_blank" rel="noopener noreferrer nofollow" className="text-gold-400 hover:underline">{s.label}</a> : <span>{s.label}</span>}<span className="mt-1 block text-xs text-muted">Source recorded {formatDate(s.checked_at)} · {s.source_kind.replaceAll("_"," ")}</span></li>)}</ul> : <p className="text-sm text-muted">No supporting sources recorded yet.</p>}
@@ -176,7 +179,8 @@ export default async function BrokerProfilePage({ params }: Props) {
           {!b.is_sample && config.flags.user_reviews && <BrokerReviewForm brokerId={b.id}/>}
           <ReportButton contentType="broker" contentId={b.id} />
         </div>
-        <aside>
+        <aside className="fx-profile-aside">
+          <nav className="fx-profile-jump card-plain" aria-label="Broker profile sections"><h2>Profile overview</h2>{[["Key information","#broker-details"],["Regulation & licences","#broker-regulation"],["Trading costs","#broker-pricing"],["Evidence & sources","#broker-evidence"]].map(([label,href])=><a key={href} href={href}>{label}</a>)}<Link href="/brokers">Compare brokers →</Link></nav>
           <section className="card-plain p-4">
             <h2 className="mb-3 font-display text-lg font-bold">{b.name} <span className="gold-text">news</span></h2>
             {news.items.length ? news.items.map((a) => <NewsCard key={a.id} a={a} variant="compact" />) : <p className="text-sm text-muted">No news yet.</p>}
