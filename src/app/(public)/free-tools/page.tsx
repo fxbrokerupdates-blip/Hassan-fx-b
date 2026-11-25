@@ -22,7 +22,7 @@ export default async function FreeToolsPage() {
     <>
       <PageHeader title="Free Daily" gold="Tools" description="Create professional financial content faster — free for registered members."
         crumbs={[{ name: "Home", path: "/" }, { name: "Free Tools", path: "/free-tools" }]} />
-      <div className="container-site grid gap-6 py-10 md:grid-cols-3">
+      <div className="container-site grid gap-6 py-10 md:grid-cols-3 fx-tool-library">
         {tools.map((t) => (
           <Link key={t.href} href={t.href} className="card-light flex flex-col items-start gap-3 p-6 transition hover:shadow-[var(--shadow-gold)]">
             <Image src={t.img} alt="" width={160} height={92} className="h-20 w-auto" />
