@@ -23,8 +23,8 @@ export async function NewsCenter({ basePath, sp, base, filters, showFeatured = t
     source: str(sp, "source", 60),
     country: str(sp, "country", 2),
     q: str(sp, "q", 120),
-    from: dateParam(sp, "from"),
-    to: dateParam(sp, "to"),
+    from: dateParam(sp, "from") ?? base.from,
+    to: dateParam(sp, "to") ?? base.to,
     page: pageNum(sp),
     pageSize: 12,
   };
@@ -37,7 +37,7 @@ export async function NewsCenter({ basePath, sp, base, filters, showFeatured = t
   const items = feature ? result.items.filter((i) => i.id !== feature.id) : result.items;
 
   return (
-    <div className="container-site py-8">
+    <div className="container-site py-8 fx-newsroom">
       <TrackOnMount event="news_list_view" metadata={{ list: basePath }} />
       <Suspense fallback={<div className="skeleton h-32" />}>
         <NewsFilters {...filters} />
@@ -52,7 +52,7 @@ export async function NewsCenter({ basePath, sp, base, filters, showFeatured = t
           No articles match these filters yet.
         </div>
       ) : (
-        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 fx-news-feed">
           {items.map((a, i) => (
             <div key={a.id} className={i === 6 ? "contents" : undefined}>
               <NewsCard a={a} />
